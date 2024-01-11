@@ -1,0 +1,56 @@
+﻿<#@ template language="C#" #>
+<#@ include file="GeneratedCodeWarning.tt" #>
+<#@ include file="UtilsClassMember.tt" #>
+<#@ include file="UtilsSerializationCode.tt" #>
+
+using <#= Utils.RootNamespace #>.<#= Utils.UtilsNamespace #>;
+
+namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
+{
+	public readonly struct <#= ObjectData.name #>
+	{
+<#
+		PushIndent("\t\t");
+		foreach (var item in ObjectData.members)
+			WriteClassMember(item, Schema, true);
+		PopIndent();
+#>
+
+		public <#= ObjectData.name #>(<#= Utils.CallbackInterface #> parent)
+		{
+<#
+			PushIndent("\t\t\t");
+			foreach (var item in ObjectData.members)
+				WriteInitializer(item, Schema, true);
+			PopIndent();
+#>
+		}
+
+		public <#= ObjectData.name #>(<#= Utils.ReaderInterface #> reader, <#= Utils.CallbackInterface #> parent)
+		{
+<#
+			PushIndent("\t\t\t");
+			foreach (var item in ObjectData.members)
+				WriteDeserializationCode(item, Schema, true);
+			PopIndent();
+#>
+		}
+
+<#
+		PushIndent("\t\t");
+		foreach (var item in ObjectData.members)
+			WriteProperty(item, Schema, true);
+		PopIndent();
+#>
+
+		public void Serialize(<#= Utils.WriterInterface #> writer)
+		{
+<#
+			PushIndent("\t\t\t");
+			foreach (var item in ObjectData.members)
+				WriteSerializationCode(item, Schema);
+			PopIndent();
+#>
+		}
+	}
+}

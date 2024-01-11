@@ -1,0 +1,154 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Schema" #><#+
+
+private string ConvertType(string type, DataSchema schema)
+{
+	if (type == Constants.TypeInt)
+	{
+		return "int";
+	}
+	else if (type == Constants.TypeLong)
+	{
+		return "long";
+	}
+	else if (type == Constants.TypeShort)
+	{
+		return "short";
+	}
+	else if (type == Constants.TypeSbyte)
+	{
+		return "sbyte";
+	}
+	else if (type == Constants.TypeByte)
+	{
+		return "byte";
+	}
+	else if (type == Constants.TypeFloat)
+	{
+		return "float";
+	}
+	else if (type == Constants.TypeBool)
+	{
+		return "bool";
+	}
+	else if (type == Constants.TypeString)
+	{
+		return "string";
+	}
+	else if (schema.HasObject(type))
+	{
+		return type;
+	}
+	else if (schema.HasStruct(type))
+	{
+		return type;
+	}
+	else
+	{
+		throw new InvalidSchemaException("Invalid type - " + type);
+	}
+}
+
+private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOnly)
+{
+	var propertyName = Utils.PropertyName(member.name);
+	var memberName = Utils.PrivateMemberName(member.name);
+
+	if (member.type == Constants.TypeMap)
+	{
+		WriteLine($"public {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}> {propertyName} => {memberName};");
+	}
+	else if (member.type == Constants.TypeSet)
+	{
+		WriteLine($"public {Utils.SetType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
+	}
+	else if (member.type == Constants.TypeList)
+	{
+		WriteLine($"public {Utils.ListType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
+	}
+	else if (schema.HasObject(member.type))
+	{
+		WriteLine($"public {ConvertType(member.type, schema)} {propertyName} => {memberName};");
+	}
+	else if (readOnly)
+	{
+		WriteLine($"public {ConvertType(member.type, schema)} {propertyName} => {memberName};");
+	}
+	else
+	{
+		WriteLine($"public {ConvertType(member.type, schema)} {propertyName}");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"get => {memberName};");
+		WriteLine("set");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"if ({memberName} == value) return;");
+		WriteLine($"{memberName} = value;");
+		WriteLine(Utils.CallbackMethod + "();");
+		PopIndent();
+		WriteLine("}");
+		PopIndent();
+		WriteLine("}");
+	}
+}
+
+private void WriteInitializer(XmlClassMember member, DataSchema schema, bool readOnly)
+{
+	var memberName = Utils.PrivateMemberName(member.name);
+	var callback = readOnly ? "parent" : "this";
+
+	if (member.type == Constants.TypeMap)
+	{
+		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>({callback});");
+	}
+	else if (member.type == Constants.TypeSet)
+	{
+		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, schema)}>({callback});");
+	}
+	else if (member.type == Constants.TypeList)
+	{
+		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({callback});");
+	}
+	else if (schema.HasObject(member.type))
+	{
+		WriteLine($"{memberName} = new {member.type}({callback});");
+	}
+	else if (schema.HasStruct(member.type))
+	{
+		WriteLine($"{memberName} = new {member.type}({callback});");
+	}
+	else
+	{
+		WriteLine($"{memberName} = default({ConvertType(member.type, schema)});");
+	}
+}
+
+private void WriteClassMember(XmlClassMember member, DataSchema schema, bool readOnly)
+{
+	var memberName = Utils.PrivateMemberName(member.name);
+	var prefix = readOnly ? "private readonly " : "private ";
+	var suffix = ";";
+
+	string memberType;
+	if (member.type == Constants.TypeMap)
+	{
+		memberType = $"{Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>";
+	}
+	else if (member.type == Constants.TypeSet)
+	{
+		memberType = $"{Utils.SetType}<{ConvertType(member.value, schema)}>";
+	}
+	else if (member.type == Constants.TypeList)
+	{
+		memberType = $"{Utils.ListType}<{ConvertType(member.value, schema)}>";
+	}
+	else
+	{
+		memberType = ConvertType(member.type, schema);
+	}
+
+	WriteLine(prefix + memberType + " " + memberName + suffix);
+}
+
+#>

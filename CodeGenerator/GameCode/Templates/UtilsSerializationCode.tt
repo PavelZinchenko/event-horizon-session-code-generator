@@ -1,0 +1,180 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Schema" #><#+
+
+private void WriteSerializationCode(XmlClassMember member, DataSchema schema)
+{
+	var memberName = Utils.PrivateMemberName(member.name);
+	if (member.type == Constants.TypeList)
+	{
+		WriteLine($"writer.WriteInt({memberName}.Count);");
+		WriteLine($"for (int i = 0; i < {memberName}.Count; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteSerializationCode($"{memberName}[i]", member.value, schema);
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeMap)
+	{
+		WriteLine($"writer.WriteInt({memberName}.Count);");
+		WriteLine($"foreach (var item in {memberName}.Items)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteSerializationCode("item.Key", member.key, schema);
+		WriteSerializationCode("item.Value", member.value, schema);
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeSet)
+	{
+		WriteLine($"writer.WriteInt({memberName}.Count);");
+		WriteLine($"foreach (var item in {memberName}.Items)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteSerializationCode("item", member.value, schema);
+		PopIndent();
+		WriteLine("}");
+	}
+	else
+	{
+		WriteSerializationCode(memberName, member.type, schema);
+	}
+}
+
+private void WriteSerializationCode(string memberName, string memberType, DataSchema schema)
+{
+	if (memberType == Constants.TypeInt)
+	{
+		WriteLine($"writer.WriteInt({memberName});");
+	}
+	else if (memberType == Constants.TypeLong)
+	{
+		WriteLine($"writer.WriteLong({memberName});");
+	}
+	else if (memberType == Constants.TypeShort)
+	{
+		WriteLine($"writer.WriteShort({memberName});");
+	}
+	else if (memberType == Constants.TypeSbyte)
+	{
+		WriteLine($"writer.WriteSbyte({memberName});");
+	}
+	else if (memberType == Constants.TypeByte)
+	{
+		WriteLine($"writer.WriteByte({memberName});");
+	}
+	else if (memberType == Constants.TypeFloat)
+	{
+		WriteLine($"writer.WriteFloat({memberName});");
+	}
+	else if (memberType == Constants.TypeBool)
+	{
+		WriteLine($"writer.WriteBool({memberName});");
+	}
+	else if (memberType == Constants.TypeString)
+	{
+		WriteLine($"writer.WriteString({memberName});");
+	}
+	else
+	{
+		WriteLine($"{memberName}.Serialize(writer);");
+	}
+}
+
+private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, bool readOnly)
+{
+	var memberName = Utils.PrivateMemberName(member.name);
+	var callback = readOnly ? "parent" : "this";
+
+	if (member.type == Constants.TypeList)
+	{
+		var count = Utils.LocalVariableName(member.name) + "ItemCount";
+		WriteLine($"var {count} = reader.ReadInt();");
+		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({count}, {callback});");
+		WriteLine($"for (int i = 0; i < {count}; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"{ConvertType(member.value, schema)} item;");
+		WriteDeserializationCode($"item", member.value, schema, readOnly);
+		WriteLine($"{memberName}.Add(item);");
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeMap)
+	{
+		var count = Utils.LocalVariableName(member.name) + "ItemCount";
+		WriteLine($"var {count} = reader.ReadInt();");
+		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"for (int i = 0; i < {count}; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"{ConvertType(member.key, schema)} key;");
+		WriteLine($"{ConvertType(member.value, schema)} value;");
+		WriteDeserializationCode("key", member.key, schema, readOnly);
+		WriteDeserializationCode("value", member.value, schema, readOnly);
+		WriteLine($"{memberName}.Add(key,value);");
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeSet)
+	{
+		var count = Utils.LocalVariableName(member.name) + "ItemCount";
+		WriteLine($"var {count} = reader.ReadInt();");
+		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"for (int i = 0; i < {count}; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"{ConvertType(member.value, schema)} item;");
+		WriteDeserializationCode("item", member.value, schema, readOnly);
+		WriteLine($"{memberName}.Add(item);");
+		PopIndent();
+		WriteLine("}");
+	}
+	else
+	{
+		WriteDeserializationCode(memberName, member.type, schema, readOnly);
+	}
+}
+
+private void WriteDeserializationCode(string memberName, string memberType, DataSchema schema, bool readOnly)
+{
+	if (memberType == Constants.TypeInt)
+	{
+		WriteLine($"{memberName} = reader.ReadInt();");
+	}
+	else if (memberType == Constants.TypeLong)
+	{
+		WriteLine($"{memberName} = reader.ReadLong();");
+	}
+	else if (memberType == Constants.TypeShort)
+	{
+		WriteLine($"{memberName} = reader.ReadShort();");
+	}
+	else if (memberType == Constants.TypeSbyte)
+	{
+		WriteLine($"{memberName} = reader.ReadSbyte();");
+	}
+	else if (memberType == Constants.TypeByte)
+	{
+		WriteLine($"{memberName} = reader.ReadByte();");
+	}
+	else if (memberType == Constants.TypeFloat)
+	{
+		WriteLine($"{memberName} = reader.ReadFloat();");
+	}
+	else if (memberType == Constants.TypeBool)
+	{
+		WriteLine($"{memberName} = reader.ReadBool();");
+	}
+	else if (memberType == Constants.TypeString)
+	{
+		WriteLine($"{memberName} = reader.ReadString();");
+	}
+	else
+	{
+		var callback = readOnly ? "parent" : "this";
+		WriteLine($"{memberName} = new {ConvertType(memberType, schema)}(reader, {callback});");
+	}
+}
+
+#>
