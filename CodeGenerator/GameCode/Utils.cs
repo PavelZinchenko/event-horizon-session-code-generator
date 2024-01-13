@@ -40,8 +40,8 @@ namespace CodeGenerator.GameCode
 		public const string SetType = "ObservableSet";
 		public const string InventoryType = "ObservableInventory";
 
-		public const string RootNamespace = "GameSession";
-		public const string ClassesNamespace = "Content";
+		public const string RootNamespace = "Session";
+		public const string ClassesNamespace = "Model";
 		public const string UtilsNamespace = "Utils";
 	}
 }
