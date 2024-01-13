@@ -37,8 +37,6 @@ namespace CodeGenerator
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
             }
-
-			Console.ReadKey();
 		}
 	}
 }

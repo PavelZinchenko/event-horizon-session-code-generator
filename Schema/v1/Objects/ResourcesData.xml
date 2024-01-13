@@ -4,5 +4,5 @@
     <member name="Stars" type="long" options="encrypted" />
     <member name="Fuel" type="int" options="encrypted" />
     <member name="Tokens" type="int" options="encrypted" />
-    <member name="Resources" type="map" key="int" value="int" options="encrypted" />
+    <member name="Resources" type="inventory" value="int" options="encrypted" />
 </data>

@@ -83,6 +83,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameCode\Templates\UtilsDeserializationCode.tt" />
     <None Include="GameCode\Templates\UtilsSerializationCode.tt" />
     <None Include="GameCode\Templates\UtilsClassMember.tt" />
     <None Include="GameCode\Templates\GeneratedCodeWarning.tt" />

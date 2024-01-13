@@ -104,11 +104,9 @@ namespace CodeGenerator.Schema
 					throw new InvalidSchemaException("Member name cannot be the same as its enclosing type - " + data.name);
 				if (!memberNames.Add(item.name))
 					throw new InvalidSchemaException("Member name must be unique - " + data.name);
-
 				if (item.type == Constants.TypeMap && string.IsNullOrEmpty(item.key))
 					throw new InvalidSchemaException("Map key cannot be empty - " + data.name + "." + item.name);
-
-				if (item.type == Constants.TypeMap || item.type == Constants.TypeList || item.type == Constants.TypeSet)
+				if (item.type == Constants.TypeMap || item.type == Constants.TypeList || item.type == Constants.TypeSet || item.type == Constants.TypeInventory)
 					if (string.IsNullOrEmpty(item.type))
 						throw new InvalidSchemaException("Value cannot be empty - " + data.name + "." + item.name);
 			}

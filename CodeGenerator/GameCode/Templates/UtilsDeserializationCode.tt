@@ -1,0 +1,101 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Schema" #><#+
+
+private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, string callback)
+{
+	var memberName = Utils.PrivateMemberName(member.name);
+	var encoding = Utils.GetEncodingType(member.encoding);
+
+	if (member.type == Constants.TypeList)
+	{
+		var count = Utils.LocalVariableName(member.name) + "ItemCount";
+		WriteLine($"int {count};");
+		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({count}, {callback});");
+		WriteLine($"for (int i = 0; i < {count}; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"{ConvertType(member.value, schema)} item;");
+		WriteDeserializationCode($"item", member.value, schema, callback, encoding);
+		WriteLine($"{memberName}.Add(item);");
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeMap)
+	{
+		var count = Utils.LocalVariableName(member.name) + "ItemCount";
+		WriteLine($"int {count};");
+		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"for (int i = 0; i < {count}; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"{ConvertType(member.key, schema)} key;");
+		WriteLine($"{ConvertType(member.value, schema)} value;");
+		WriteDeserializationCode("key", member.key, schema, callback, encoding);
+		WriteDeserializationCode("value", member.value, schema, callback, encoding);
+		WriteLine($"{memberName}.Add(key,value);");
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		var count = Utils.LocalVariableName(member.name) + "ItemCount";
+		WriteLine($"int {count};");
+		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"for (int i = 0; i < {count}; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"{ConvertType(member.value, schema)} value;");
+		WriteLine($"int quantity;");
+		WriteDeserializationCode("value", member.value, schema, callback, encoding);
+		WriteDeserializationCode("quantity", Constants.TypeInt, schema, callback, encoding);
+		WriteLine($"{memberName}.Add(value,quantity);");
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeSet)
+	{
+		var count = Utils.LocalVariableName(member.name) + "ItemCount";
+		WriteLine($"int {count};");
+		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"for (int i = 0; i < {count}; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"{ConvertType(member.value, schema)} item;");
+		WriteDeserializationCode("item", member.value, schema, callback, encoding);
+		WriteLine($"{memberName}.Add(item);");
+		PopIndent();
+		WriteLine("}");
+	}
+	else
+	{
+		WriteDeserializationCode(memberName, member.type, schema, callback, encoding);
+	}
+}
+
+private void WriteDeserializationCode(string memberName, string memberType, DataSchema schema, string callback, string encoding)
+{
+	if (memberType == Constants.TypeInt)
+		WriteLine($"{memberName} = reader.ReadInt({encoding});");
+	else if (memberType == Constants.TypeLong)
+		WriteLine($"{memberName} = reader.ReadLong({encoding});");
+	else if (memberType == Constants.TypeShort)
+		WriteLine($"{memberName} = reader.ReadShort({encoding});"); 
+	else if (memberType == Constants.TypeSbyte)
+		WriteLine($"{memberName} = reader.ReadSbyte({encoding});"); 
+	else if (memberType == Constants.TypeByte)
+		WriteLine($"{memberName} = reader.ReadByte({encoding});"); 
+	else if (memberType == Constants.TypeFloat)
+		WriteLine($"{memberName} = reader.ReadFloat({encoding});"); 
+	else if (memberType == Constants.TypeBool)
+		WriteLine($"{memberName} = reader.ReadBool({encoding});"); 
+	else if (memberType == Constants.TypeString)
+		WriteLine($"{memberName} = reader.ReadString({encoding});"); 
+	else
+		WriteLine($"{memberName} = new {ConvertType(memberType, schema)}(reader, {callback});");
+}
+
+#>

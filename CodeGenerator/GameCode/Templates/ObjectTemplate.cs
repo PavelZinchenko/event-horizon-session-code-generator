@@ -77,56 +77,56 @@ namespace CodeGenerator.GameCode.Templates
             this.Write("\r\n");
             this.Write("\r\nusing ");
             
-            #line 6 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 7 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.RootNamespace));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 6 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 7 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.UtilsNamespace));
             
             #line default
             #line hidden
             this.Write(";\r\n\r\nnamespace ");
             
-            #line 8 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 9 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.RootNamespace));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 8 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 9 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.ClassesNamespace));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n\tpublic class ");
             
-            #line 10 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 11 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write(" : ");
             
-            #line 10 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 11 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackInterface));
             
             #line default
             #line hidden
             this.Write("\r\n\t{\r\n\t\tprivate readonly ");
             
-            #line 12 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 13 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackInterface));
             
             #line default
             #line hidden
             this.Write(" _parent;\r\n");
             
-            #line 13 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 14 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
 
 		PushIndent("\t\t");
 		foreach (var item in ObjectData.members)
@@ -136,27 +136,41 @@ namespace CodeGenerator.GameCode.Templates
             
             #line default
             #line hidden
-            this.Write("\r\n\t\tpublic bool DataChanged { get; private set; }\r\n\r\n\t\tpublic ");
+            this.Write("\r\n\t\tpublic const int VersionMinor = ");
+            
+            #line 21 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Schema.Version.Minor));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n\t\tpublic const int VersionMajor = ");
             
             #line 22 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Schema.Version.Major));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n\r\n\t\tpublic bool DataChanged { get; private set; }\r\n\r\n\t\tpublic ");
+            
+            #line 26 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 22 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 26 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackInterface));
             
             #line default
             #line hidden
             this.Write(" parent)\r\n\t\t{\r\n\t\t\t_parent = parent;\r\n");
             
-            #line 25 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 29 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
 
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteInitializer(item, Schema, false);
+				WriteInitializer(item, Schema, "this");
 			PopIndent();
 
             
@@ -164,32 +178,32 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\t\t}\r\n\r\n\t\tpublic ");
             
-            #line 33 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 37 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 33 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.ReaderInterface));
+            #line 37 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.ReaderClass));
             
             #line default
             #line hidden
             this.Write(" reader, ");
             
-            #line 33 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 37 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackInterface));
             
             #line default
             #line hidden
             this.Write(" parent)\r\n\t\t{\r\n");
             
-            #line 35 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 39 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
 
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteDeserializationCode(item, Schema, false);
+				WriteDeserializationCode(item, Schema, "this");
 			PopIndent();
 
             
@@ -197,7 +211,7 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\t\t\t_parent = parent;\r\n\t\t\tDataChanged = false;\r\n\t\t}\r\n\r\n");
             
-            #line 45 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 49 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
 
 		PushIndent("\t\t");
 		foreach (var item in ObjectData.members)
@@ -209,16 +223,16 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\r\n\t\tpublic void Serialize(");
             
-            #line 52 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.WriterInterface));
+            #line 56 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.WriterClass));
             
             #line default
             #line hidden
             this.Write(" writer)\r\n\t\t{\r\n");
             
-            #line 54 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 58 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
 
-			PushIndent("\t\t\t");
+			PushIndent("\t\t\t\t");
 			foreach (var item in ObjectData.members)
 				WriteSerializationCode(item, Schema);
 			PopIndent();
@@ -226,16 +240,16 @@ namespace CodeGenerator.GameCode.Templates
             
             #line default
             #line hidden
-            this.Write("\t\t}\r\n\r\n\t\tpublic void ");
+            this.Write("\t\t\tDataChanged = false;\r\n\t\t}\r\n\r\n\t\tpublic void ");
             
-            #line 62 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 67 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackMethod));
             
             #line default
             #line hidden
             this.Write("()\r\n\t\t{\r\n\t\t\tDataChanged = true;\r\n\t\t\t_parent?.");
             
-            #line 65 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 70 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackMethod));
             
             #line default
@@ -295,10 +309,44 @@ private string ConvertType(string type, DataSchema schema)
 	}
 }
 
+private void WriteInterfaceProperty(XmlClassMember member, DataSchema schema)
+{
+	var propertyName = Utils.PropertyName(member.name);
+	var memberName = Utils.PrivateMemberName(member.name);
+
+	if (member.type == Constants.TypeMap)
+	{
+		var key = ConvertType(member.key, schema);
+		var value = ConvertType(member.value, schema);
+		WriteLine($"public {Utils.MapType}<{key}, {value}> {propertyName} {{ get; }}");
+	}
+	else if (member.type == Constants.TypeSet)
+	{
+		WriteLine($"public {Utils.SetType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
+	}
+	else if (member.type == Constants.TypeList)
+	{
+		WriteLine($"public {Utils.ListType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
+	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		WriteLine($"public {Utils.InventoryType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
+	}
+	else if (schema.HasObject(member.type))
+	{
+		WriteLine($"public {Utils.InterfaceName(member.type)} {propertyName} {{ get; }}");
+	}
+	else
+	{
+		WriteLine($"public {ConvertType(member.type, schema)} {propertyName} {{ get; set; }}");
+	}
+}
+
 private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOnly)
 {
 	var propertyName = Utils.PropertyName(member.name);
 	var memberName = Utils.PrivateMemberName(member.name);
+	var notify = !member.options.Contains(Constants.OptionNotImportant);
 
 	if (member.type == Constants.TypeMap)
 	{
@@ -312,9 +360,13 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 	{
 		WriteLine($"public {Utils.ListType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
 	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		WriteLine($"public {Utils.InventoryType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
+	}
 	else if (schema.HasObject(member.type))
 	{
-		WriteLine($"public {ConvertType(member.type, schema)} {propertyName} => {memberName};");
+		WriteLine($"public {member.type} {propertyName} => {memberName};");
 	}
 	else if (readOnly)
 	{
@@ -331,7 +383,7 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 		PushIndent("\t");
 		WriteLine($"if ({memberName} == value) return;");
 		WriteLine($"{memberName} = value;");
-		WriteLine(Utils.CallbackMethod + "();");
+		if (notify) WriteLine(Utils.CallbackMethod + "();");
 		PopIndent();
 		WriteLine("}");
 		PopIndent();
@@ -339,10 +391,9 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 	}
 }
 
-private void WriteInitializer(XmlClassMember member, DataSchema schema, bool readOnly)
+private void WriteInitializer(XmlClassMember member, DataSchema schema, string callback)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
-	var callback = readOnly ? "parent" : "this";
 
 	if (member.type == Constants.TypeMap)
 	{
@@ -356,6 +407,10 @@ private void WriteInitializer(XmlClassMember member, DataSchema schema, bool rea
 	{
 		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({callback});");
 	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, schema)}>({callback});");
+	}
 	else if (schema.HasObject(member.type))
 	{
 		WriteLine($"{memberName} = new {member.type}({callback});");
@@ -366,13 +421,28 @@ private void WriteInitializer(XmlClassMember member, DataSchema schema, bool rea
 	}
 	else
 	{
-		WriteLine($"{memberName} = default({ConvertType(member.type, schema)});");
+		WriteLine($"{memberName} = {GetDefaultValue(member.@default, member.type, schema)};");
 	}
+}
+
+private string GetDefaultValue(string value, string type, DataSchema schema)
+{
+	if (type == Constants.TypeString)
+		return string.IsNullOrEmpty(value) ? "string.Empty" : $"\"{value}\"";
+
+	if (string.IsNullOrEmpty(value))
+		return $"default({ConvertType(type, schema)})";
+
+	if (value == Constants.Timestamp)
+		return $"({ConvertType(type, schema)})System.DateTime.UtcNow.Ticks";
+
+	return value;
 }
 
 private void WriteClassMember(XmlClassMember member, DataSchema schema, bool readOnly)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
+	var encrypted = member.options.Contains(Constants.OptionEncrypted);
 	var prefix = readOnly ? "private readonly " : "private ";
 	var suffix = ";";
 
@@ -388,6 +458,19 @@ private void WriteClassMember(XmlClassMember member, DataSchema schema, bool rea
 	else if (member.type == Constants.TypeList)
 	{
 		memberType = $"{Utils.ListType}<{ConvertType(member.value, schema)}>";
+	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		memberType = $"{Utils.InventoryType}<{ConvertType(member.value, schema)}>";
+	}
+	else if (encrypted)
+	{
+		if (member.type == Constants.TypeInt)
+			memberType = Utils.EncryptedIntType;
+		else if (member.type == Constants.TypeLong)
+			memberType = Utils.EncryptedLongType;
+		else
+			throw new System.InvalidOperationException($"'encrypted' not supported for type {member.type}");
 	}
 	else
 	{
@@ -408,98 +491,102 @@ private void WriteClassMember(XmlClassMember member, DataSchema schema, bool rea
 private void WriteSerializationCode(XmlClassMember member, DataSchema schema)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
+	var encoding = Utils.GetEncodingType(member.encoding);
+
 	if (member.type == Constants.TypeList)
 	{
-		WriteLine($"writer.WriteInt({memberName}.Count);");
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
 		WriteLine($"for (int i = 0; i < {memberName}.Count; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode($"{memberName}[i]", member.value, schema);
+		WriteSerializationCode($"{memberName}[i]", member.value, schema, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeMap)
 	{
-		WriteLine($"writer.WriteInt({memberName}.Count);");
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
 		WriteLine($"foreach (var item in {memberName}.Items)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode("item.Key", member.key, schema);
-		WriteSerializationCode("item.Value", member.value, schema);
+		WriteSerializationCode("item.Key", member.key, schema, encoding);
+		WriteSerializationCode("item.Value", member.value, schema, encoding);
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteLine($"foreach (var item in {memberName}.Items)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteSerializationCode("item.Key", member.value, schema, encoding);
+		WriteSerializationCode("item.Value", Constants.TypeInt, schema, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeSet)
 	{
-		WriteLine($"writer.WriteInt({memberName}.Count);");
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
 		WriteLine($"foreach (var item in {memberName}.Items)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode("item", member.value, schema);
+		WriteSerializationCode("item", member.value, schema, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else
 	{
-		WriteSerializationCode(memberName, member.type, schema);
+		WriteSerializationCode(memberName, member.type, schema, encoding);
 	}
 }
 
-private void WriteSerializationCode(string memberName, string memberType, DataSchema schema)
+private void WriteSerializationCode(string memberName, string memberType, DataSchema schema, string encoding)
 {
 	if (memberType == Constants.TypeInt)
-	{
-		WriteLine($"writer.WriteInt({memberName});");
-	}
+		WriteLine($"writer.WriteInt({memberName}, {encoding});");
 	else if (memberType == Constants.TypeLong)
-	{
-		WriteLine($"writer.WriteLong({memberName});");
-	}
+		WriteLine($"writer.WriteLong({memberName}, {encoding});");
 	else if (memberType == Constants.TypeShort)
-	{
-		WriteLine($"writer.WriteShort({memberName});");
-	}
+		WriteLine($"writer.WriteShort({memberName}, {encoding});");
 	else if (memberType == Constants.TypeSbyte)
-	{
-		WriteLine($"writer.WriteSbyte({memberName});");
-	}
+		WriteLine($"writer.WriteSbyte({memberName}, {encoding});");
 	else if (memberType == Constants.TypeByte)
-	{
-		WriteLine($"writer.WriteByte({memberName});");
-	}
+		WriteLine($"writer.WriteByte({memberName}, {encoding});");
 	else if (memberType == Constants.TypeFloat)
-	{
-		WriteLine($"writer.WriteFloat({memberName});");
-	}
+		WriteLine($"writer.WriteFloat({memberName}, {encoding});");
 	else if (memberType == Constants.TypeBool)
-	{
-		WriteLine($"writer.WriteBool({memberName});");
-	}
+		WriteLine($"writer.WriteBool({memberName}, {encoding});");
 	else if (memberType == Constants.TypeString)
-	{
-		WriteLine($"writer.WriteString({memberName});");
-	}
+		WriteLine($"writer.WriteString({memberName}, {encoding});");
 	else
-	{
 		WriteLine($"{memberName}.Serialize(writer);");
-	}
 }
 
-private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, bool readOnly)
+
+        
+        #line default
+        #line hidden
+        
+        #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsDeserializationCode.tt"
+
+
+private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, string callback)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
-	var callback = readOnly ? "parent" : "this";
+	var encoding = Utils.GetEncodingType(member.encoding);
 
 	if (member.type == Constants.TypeList)
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
-		WriteLine($"var {count} = reader.ReadInt();");
+		WriteLine($"int {count};");
+		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
 		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({count}, {callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
 		WriteLine($"{ConvertType(member.value, schema)} item;");
-		WriteDeserializationCode($"item", member.value, schema, readOnly);
+		WriteDeserializationCode($"item", member.value, schema, callback, encoding);
 		WriteLine($"{memberName}.Add(item);");
 		PopIndent();
 		WriteLine("}");
@@ -507,78 +594,78 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	else if (member.type == Constants.TypeMap)
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
-		WriteLine($"var {count} = reader.ReadInt();");
+		WriteLine($"int {count};");
+		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
 		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>({callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
 		WriteLine($"{ConvertType(member.key, schema)} key;");
 		WriteLine($"{ConvertType(member.value, schema)} value;");
-		WriteDeserializationCode("key", member.key, schema, readOnly);
-		WriteDeserializationCode("value", member.value, schema, readOnly);
+		WriteDeserializationCode("key", member.key, schema, callback, encoding);
+		WriteDeserializationCode("value", member.value, schema, callback, encoding);
 		WriteLine($"{memberName}.Add(key,value);");
+		PopIndent();
+		WriteLine("}");
+	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		var count = Utils.LocalVariableName(member.name) + "ItemCount";
+		WriteLine($"int {count};");
+		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"for (int i = 0; i < {count}; ++i)");
+		WriteLine("{");
+		PushIndent("\t");
+		WriteLine($"{ConvertType(member.value, schema)} value;");
+		WriteLine($"int quantity;");
+		WriteDeserializationCode("value", member.value, schema, callback, encoding);
+		WriteDeserializationCode("quantity", Constants.TypeInt, schema, callback, encoding);
+		WriteLine($"{memberName}.Add(value,quantity);");
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeSet)
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
-		WriteLine($"var {count} = reader.ReadInt();");
+		WriteLine($"int {count};");
+		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
 		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, schema)}>({callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
 		WriteLine($"{ConvertType(member.value, schema)} item;");
-		WriteDeserializationCode("item", member.value, schema, readOnly);
+		WriteDeserializationCode("item", member.value, schema, callback, encoding);
 		WriteLine($"{memberName}.Add(item);");
 		PopIndent();
 		WriteLine("}");
 	}
 	else
 	{
-		WriteDeserializationCode(memberName, member.type, schema, readOnly);
+		WriteDeserializationCode(memberName, member.type, schema, callback, encoding);
 	}
 }
 
-private void WriteDeserializationCode(string memberName, string memberType, DataSchema schema, bool readOnly)
+private void WriteDeserializationCode(string memberName, string memberType, DataSchema schema, string callback, string encoding)
 {
 	if (memberType == Constants.TypeInt)
-	{
-		WriteLine($"{memberName} = reader.ReadInt();");
-	}
+		WriteLine($"{memberName} = reader.ReadInt({encoding});");
 	else if (memberType == Constants.TypeLong)
-	{
-		WriteLine($"{memberName} = reader.ReadLong();");
-	}
+		WriteLine($"{memberName} = reader.ReadLong({encoding});");
 	else if (memberType == Constants.TypeShort)
-	{
-		WriteLine($"{memberName} = reader.ReadShort();");
-	}
+		WriteLine($"{memberName} = reader.ReadShort({encoding});"); 
 	else if (memberType == Constants.TypeSbyte)
-	{
-		WriteLine($"{memberName} = reader.ReadSbyte();");
-	}
+		WriteLine($"{memberName} = reader.ReadSbyte({encoding});"); 
 	else if (memberType == Constants.TypeByte)
-	{
-		WriteLine($"{memberName} = reader.ReadByte();");
-	}
+		WriteLine($"{memberName} = reader.ReadByte({encoding});"); 
 	else if (memberType == Constants.TypeFloat)
-	{
-		WriteLine($"{memberName} = reader.ReadFloat();");
-	}
+		WriteLine($"{memberName} = reader.ReadFloat({encoding});"); 
 	else if (memberType == Constants.TypeBool)
-	{
-		WriteLine($"{memberName} = reader.ReadBool();");
-	}
+		WriteLine($"{memberName} = reader.ReadBool({encoding});"); 
 	else if (memberType == Constants.TypeString)
-	{
-		WriteLine($"{memberName} = reader.ReadString();");
-	}
+		WriteLine($"{memberName} = reader.ReadString({encoding});"); 
 	else
-	{
-		var callback = readOnly ? "parent" : "this";
 		WriteLine($"{memberName} = new {ConvertType(memberType, schema)}(reader, {callback});");
-	}
 }
 
 

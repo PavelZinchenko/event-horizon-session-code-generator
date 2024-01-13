@@ -49,10 +49,44 @@ private string ConvertType(string type, DataSchema schema)
 	}
 }
 
+private void WriteInterfaceProperty(XmlClassMember member, DataSchema schema)
+{
+	var propertyName = Utils.PropertyName(member.name);
+	var memberName = Utils.PrivateMemberName(member.name);
+
+	if (member.type == Constants.TypeMap)
+	{
+		var key = ConvertType(member.key, schema);
+		var value = ConvertType(member.value, schema);
+		WriteLine($"public {Utils.MapType}<{key}, {value}> {propertyName} {{ get; }}");
+	}
+	else if (member.type == Constants.TypeSet)
+	{
+		WriteLine($"public {Utils.SetType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
+	}
+	else if (member.type == Constants.TypeList)
+	{
+		WriteLine($"public {Utils.ListType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
+	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		WriteLine($"public {Utils.InventoryType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
+	}
+	else if (schema.HasObject(member.type))
+	{
+		WriteLine($"public {Utils.InterfaceName(member.type)} {propertyName} {{ get; }}");
+	}
+	else
+	{
+		WriteLine($"public {ConvertType(member.type, schema)} {propertyName} {{ get; set; }}");
+	}
+}
+
 private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOnly)
 {
 	var propertyName = Utils.PropertyName(member.name);
 	var memberName = Utils.PrivateMemberName(member.name);
+	var notify = !member.options.Contains(Constants.OptionNotImportant);
 
 	if (member.type == Constants.TypeMap)
 	{
@@ -66,9 +100,13 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 	{
 		WriteLine($"public {Utils.ListType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
 	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		WriteLine($"public {Utils.InventoryType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
+	}
 	else if (schema.HasObject(member.type))
 	{
-		WriteLine($"public {ConvertType(member.type, schema)} {propertyName} => {memberName};");
+		WriteLine($"public {member.type} {propertyName} => {memberName};");
 	}
 	else if (readOnly)
 	{
@@ -85,7 +123,7 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 		PushIndent("\t");
 		WriteLine($"if ({memberName} == value) return;");
 		WriteLine($"{memberName} = value;");
-		WriteLine(Utils.CallbackMethod + "();");
+		if (notify) WriteLine(Utils.CallbackMethod + "();");
 		PopIndent();
 		WriteLine("}");
 		PopIndent();
@@ -93,10 +131,9 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 	}
 }
 
-private void WriteInitializer(XmlClassMember member, DataSchema schema, bool readOnly)
+private void WriteInitializer(XmlClassMember member, DataSchema schema, string callback)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
-	var callback = readOnly ? "parent" : "this";
 
 	if (member.type == Constants.TypeMap)
 	{
@@ -110,6 +147,10 @@ private void WriteInitializer(XmlClassMember member, DataSchema schema, bool rea
 	{
 		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({callback});");
 	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, schema)}>({callback});");
+	}
 	else if (schema.HasObject(member.type))
 	{
 		WriteLine($"{memberName} = new {member.type}({callback});");
@@ -120,13 +161,28 @@ private void WriteInitializer(XmlClassMember member, DataSchema schema, bool rea
 	}
 	else
 	{
-		WriteLine($"{memberName} = default({ConvertType(member.type, schema)});");
+		WriteLine($"{memberName} = {GetDefaultValue(member.@default, member.type, schema)};");
 	}
+}
+
+private string GetDefaultValue(string value, string type, DataSchema schema)
+{
+	if (type == Constants.TypeString)
+		return string.IsNullOrEmpty(value) ? "string.Empty" : $"\"{value}\"";
+
+	if (string.IsNullOrEmpty(value))
+		return $"default({ConvertType(type, schema)})";
+
+	if (value == Constants.Timestamp)
+		return $"({ConvertType(type, schema)})System.DateTime.UtcNow.Ticks";
+
+	return value;
 }
 
 private void WriteClassMember(XmlClassMember member, DataSchema schema, bool readOnly)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
+	var encrypted = member.options.Contains(Constants.OptionEncrypted);
 	var prefix = readOnly ? "private readonly " : "private ";
 	var suffix = ";";
 
@@ -142,6 +198,19 @@ private void WriteClassMember(XmlClassMember member, DataSchema schema, bool rea
 	else if (member.type == Constants.TypeList)
 	{
 		memberType = $"{Utils.ListType}<{ConvertType(member.value, schema)}>";
+	}
+	else if (member.type == Constants.TypeInventory)
+	{
+		memberType = $"{Utils.InventoryType}<{ConvertType(member.value, schema)}>";
+	}
+	else if (encrypted)
+	{
+		if (member.type == Constants.TypeInt)
+			memberType = Utils.EncryptedIntType;
+		else if (member.type == Constants.TypeLong)
+			memberType = Utils.EncryptedLongType;
+		else
+			throw new System.InvalidOperationException($"'encrypted' not supported for type {member.type}");
 	}
 	else
 	{

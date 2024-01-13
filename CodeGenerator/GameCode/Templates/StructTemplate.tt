@@ -2,12 +2,13 @@
 <#@ include file="GeneratedCodeWarning.tt" #>
 <#@ include file="UtilsClassMember.tt" #>
 <#@ include file="UtilsSerializationCode.tt" #>
+<#@ include file="UtilsDeserializationCode.tt" #>
 
 using <#= Utils.RootNamespace #>.<#= Utils.UtilsNamespace #>;
 
 namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 {
-	public readonly struct <#= ObjectData.name #>
+	public readonly partial struct <#= ObjectData.name #>
 	{
 <#
 		PushIndent("\t\t");
@@ -21,17 +22,17 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 <#
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteInitializer(item, Schema, true);
+				WriteInitializer(item, Schema, "parent");
 			PopIndent();
 #>
 		}
 
-		public <#= ObjectData.name #>(<#= Utils.ReaderInterface #> reader, <#= Utils.CallbackInterface #> parent)
+		public <#= ObjectData.name #>(<#= Utils.ReaderClass #> reader, <#= Utils.CallbackInterface #> parent)
 		{
 <#
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteDeserializationCode(item, Schema, true);
+				WriteDeserializationCode(item, Schema, "parent");
 			PopIndent();
 #>
 		}
@@ -43,10 +44,10 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 		PopIndent();
 #>
 
-		public void Serialize(<#= Utils.WriterInterface #> writer)
+		public void Serialize(<#= Utils.WriterClass #> writer)
 		{
 <#
-			PushIndent("\t\t\t");
+			PushIndent("\t\t\t\t");
 			foreach (var item in ObjectData.members)
 				WriteSerializationCode(item, Schema);
 			PopIndent();

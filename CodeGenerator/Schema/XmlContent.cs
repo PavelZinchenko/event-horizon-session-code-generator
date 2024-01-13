@@ -39,11 +39,15 @@ namespace CodeGenerator.Schema
 		public string key = string.Empty;
 		[XmlAttribute]
 		public string value = string.Empty;
-        [XmlAttribute]
-        public string options = string.Empty;
-    }
+		[XmlAttribute]
+		public string options = string.Empty;
+		[XmlAttribute]
+		public string encoding = string.Empty;
+		[XmlAttribute]
+		public string @default = string.Empty;
+	}
 
-    [XmlRoot("data")]
+	[XmlRoot("data")]
     public class XmlClassItem
     {
         [XmlAttribute]

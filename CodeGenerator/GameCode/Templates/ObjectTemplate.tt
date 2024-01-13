@@ -2,6 +2,7 @@
 <#@ include file="GeneratedCodeWarning.tt" #>
 <#@ include file="UtilsClassMember.tt" #>
 <#@ include file="UtilsSerializationCode.tt" #>
+<#@ include file="UtilsDeserializationCode.tt" #>
 
 using <#= Utils.RootNamespace #>.<#= Utils.UtilsNamespace #>;
 
@@ -17,6 +18,9 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 		PopIndent();
 #>
 
+		public const int VersionMinor = <#= Schema.Version.Minor #>;
+		public const int VersionMajor = <#= Schema.Version.Major #>;
+
 		public bool DataChanged { get; private set; }
 
 		public <#= ObjectData.name #>(<#= Utils.CallbackInterface #> parent)
@@ -25,17 +29,17 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 <#
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteInitializer(item, Schema, false);
+				WriteInitializer(item, Schema, "this");
 			PopIndent();
 #>
 		}
 
-		public <#= ObjectData.name #>(<#= Utils.ReaderInterface #> reader, <#= Utils.CallbackInterface #> parent)
+		public <#= ObjectData.name #>(<#= Utils.ReaderClass #> reader, <#= Utils.CallbackInterface #> parent)
 		{
 <#
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteDeserializationCode(item, Schema, false);
+				WriteDeserializationCode(item, Schema, "this");
 			PopIndent();
 #>
 			_parent = parent;
@@ -49,14 +53,15 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 		PopIndent();
 #>
 
-		public void Serialize(<#= Utils.WriterInterface #> writer)
+		public void Serialize(<#= Utils.WriterClass #> writer)
 		{
 <#
-			PushIndent("\t\t\t");
+			PushIndent("\t\t\t\t");
 			foreach (var item in ObjectData.members)
 				WriteSerializationCode(item, Schema);
 			PopIndent();
 #>
+			DataChanged = false;
 		}
 
 		public void <#= Utils.CallbackMethod #>()

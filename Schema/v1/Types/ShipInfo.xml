@@ -4,7 +4,7 @@
     <member name="Name" type="string" />
     <member name="ColorScheme" type="long" />
     <member name="Experience" type="long" options="encrypted" />
-    <member name="Components" type="list" value="ComponentInfo" />
+    <member name="Components" type="list" value="ShipComponentInfo" />
     <member name="LayoutModifications" type="list" value="byte" />
     <member name="Modifications" type="list" value="long" />
     <member name="Satellite1" type="SatelliteInfo" />

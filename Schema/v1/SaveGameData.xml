@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data name="Main" type="object">
+<data name="SaveGameData" type="object">
+    <member name="Game" type="GameData" />
     <member name="Achievements" type="Achievements" />
     <member name="Bosses" type="BossData" />
     <member name="Common" type="CommonObjectData" />
