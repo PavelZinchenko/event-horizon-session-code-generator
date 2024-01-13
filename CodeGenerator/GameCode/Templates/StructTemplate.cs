@@ -225,13 +225,25 @@ private string ConvertType(string type, DataSchema schema)
 	{
 		return "int";
 	}
+	else if (type == Constants.TypeUint)
+	{
+		return "uint";
+	}
 	else if (type == Constants.TypeLong)
 	{
 		return "long";
 	}
+	else if (type == Constants.TypeUlong)
+	{
+		return "ulong";
+	}
 	else if (type == Constants.TypeShort)
 	{
 		return "short";
+	}
+	else if (type == Constants.TypeUshort)
+	{
+		return "ushort";
 	}
 	else if (type == Constants.TypeSbyte)
 	{
@@ -503,10 +515,16 @@ private void WriteSerializationCode(string memberName, string memberType, DataSc
 {
 	if (memberType == Constants.TypeInt)
 		WriteLine($"writer.WriteInt({memberName}, {encoding});");
+	else if (memberType == Constants.TypeUint)
+		WriteLine($"writer.WriteUint({memberName}, {encoding});");
 	else if (memberType == Constants.TypeLong)
 		WriteLine($"writer.WriteLong({memberName}, {encoding});");
+	else if (memberType == Constants.TypeUlong)
+		WriteLine($"writer.WriteUlong({memberName}, {encoding});");
 	else if (memberType == Constants.TypeShort)
 		WriteLine($"writer.WriteShort({memberName}, {encoding});");
+	else if (memberType == Constants.TypeUshort)
+		WriteLine($"writer.WriteUshort({memberName}, {encoding});");
 	else if (memberType == Constants.TypeSbyte)
 		WriteLine($"writer.WriteSbyte({memberName}, {encoding});");
 	else if (memberType == Constants.TypeByte)
@@ -608,10 +626,16 @@ private void WriteDeserializationCode(string memberName, string memberType, Data
 {
 	if (memberType == Constants.TypeInt)
 		WriteLine($"{memberName} = reader.ReadInt({encoding});");
+	else if (memberType == Constants.TypeUint)
+		WriteLine($"{memberName} = reader.ReadUint({encoding});");
 	else if (memberType == Constants.TypeLong)
 		WriteLine($"{memberName} = reader.ReadLong({encoding});");
+	else if (memberType == Constants.TypeUlong)
+		WriteLine($"{memberName} = reader.ReadUlong({encoding});");
 	else if (memberType == Constants.TypeShort)
 		WriteLine($"{memberName} = reader.ReadShort({encoding});"); 
+	else if (memberType == Constants.TypeUshort)
+		WriteLine($"{memberName} = reader.ReadUshort({encoding});"); 
 	else if (memberType == Constants.TypeSbyte)
 		WriteLine($"{memberName} = reader.ReadSbyte({encoding});"); 
 	else if (memberType == Constants.TypeByte)

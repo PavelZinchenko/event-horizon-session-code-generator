@@ -80,10 +80,16 @@ private void WriteDeserializationCode(string memberName, string memberType, Data
 {
 	if (memberType == Constants.TypeInt)
 		WriteLine($"{memberName} = reader.ReadInt({encoding});");
+	else if (memberType == Constants.TypeUint)
+		WriteLine($"{memberName} = reader.ReadUint({encoding});");
 	else if (memberType == Constants.TypeLong)
 		WriteLine($"{memberName} = reader.ReadLong({encoding});");
+	else if (memberType == Constants.TypeUlong)
+		WriteLine($"{memberName} = reader.ReadUlong({encoding});");
 	else if (memberType == Constants.TypeShort)
 		WriteLine($"{memberName} = reader.ReadShort({encoding});"); 
+	else if (memberType == Constants.TypeUshort)
+		WriteLine($"{memberName} = reader.ReadUshort({encoding});"); 
 	else if (memberType == Constants.TypeSbyte)
 		WriteLine($"{memberName} = reader.ReadSbyte({encoding});"); 
 	else if (memberType == Constants.TypeByte)

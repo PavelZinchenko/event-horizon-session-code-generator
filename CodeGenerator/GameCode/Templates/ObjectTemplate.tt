@@ -56,7 +56,7 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 		public void Serialize(<#= Utils.WriterClass #> writer)
 		{
 <#
-			PushIndent("\t\t\t\t");
+			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
 				WriteSerializationCode(item, Schema);
 			PopIndent();

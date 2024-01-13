@@ -7,13 +7,25 @@ private string ConvertType(string type, DataSchema schema)
 	{
 		return "int";
 	}
+	else if (type == Constants.TypeUint)
+	{
+		return "uint";
+	}
 	else if (type == Constants.TypeLong)
 	{
 		return "long";
 	}
+	else if (type == Constants.TypeUlong)
+	{
+		return "ulong";
+	}
 	else if (type == Constants.TypeShort)
 	{
 		return "short";
+	}
+	else if (type == Constants.TypeUshort)
+	{
+		return "ushort";
 	}
 	else if (type == Constants.TypeSbyte)
 	{

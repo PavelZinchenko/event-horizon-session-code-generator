@@ -3,10 +3,13 @@
     public static class Constants
     {
 		public const string TypeInt = "int";
-		public const string TypeLong = "long";
+		public const string TypeUint = "uint";
 		public const string TypeShort = "short";
-		public const string TypeByte = "byte";
+		public const string TypeUshort = "ushort";
+		public const string TypeLong = "long";
+		public const string TypeUlong = "ulong";
 		public const string TypeSbyte = "sbyte";
+		public const string TypeByte = "byte";
 		public const string TypeFloat = "single";
         public const string TypeBool = "bool";
         public const string TypeString = "string";
