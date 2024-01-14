@@ -50,9 +50,11 @@ namespace CodeGenerator.Schema
 	[XmlRoot("data")]
     public class XmlClassItem
     {
-        [XmlAttribute]
-        public string name = string.Empty;
-        [XmlElement("member")]
+		[XmlAttribute]
+		public string type = string.Empty;
+		[XmlAttribute]
+		public string name = string.Empty;
+		[XmlElement("member")]
         public List<XmlClassMember> members = new List<XmlClassMember>();
-    }
+	}
 }

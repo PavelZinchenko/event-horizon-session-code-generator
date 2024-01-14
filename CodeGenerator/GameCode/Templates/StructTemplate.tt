@@ -6,14 +6,14 @@
 
 using <#= Utils.RootNamespace #>.<#= Utils.UtilsNamespace #>;
 
-namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
+namespace <#= Utils.RootNamespace #>.<#= Context.GetObjectNamespace(ObjectData.name) #>
 {
 	public readonly partial struct <#= ObjectData.name #>
 	{
 <#
 		PushIndent("\t\t");
 		foreach (var item in ObjectData.members)
-			WriteClassMember(item, Schema, true);
+			WriteClassMember(item, Context, true);
 		PopIndent();
 #>
 
@@ -22,7 +22,7 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 <#
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteInitializer(item, Schema, "parent");
+				WriteInitializer(item, Context, "parent");
 			PopIndent();
 #>
 		}
@@ -32,7 +32,7 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 <#
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteDeserializationCode(item, Schema, "parent");
+				WriteDeserializationCode(item, Context, "parent");
 			PopIndent();
 #>
 		}
@@ -40,7 +40,7 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 <#
 		PushIndent("\t\t");
 		foreach (var item in ObjectData.members)
-			WriteProperty(item, Schema, true);
+			WriteProperty(item, Context, true);
 		PopIndent();
 #>
 
@@ -49,7 +49,7 @@ namespace <#= Utils.RootNamespace #>.<#= Utils.ClassesNamespace #>
 <#
 			PushIndent("\t\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteSerializationCode(item, Schema);
+				WriteSerializationCode(item, Context);
 			PopIndent();
 #>
 		}

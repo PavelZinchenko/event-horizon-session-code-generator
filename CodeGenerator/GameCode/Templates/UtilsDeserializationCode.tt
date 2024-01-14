@@ -1,7 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Schema" #><#+
 
-private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, string callback)
+private void WriteDeserializationCode(XmlClassMember member, SchemaVersionInfo context, string callback)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
 	var encoding = Utils.GetEncodingType(member.encoding);
@@ -10,13 +10,13 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
 		WriteLine($"int {count};");
-		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
-		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({count}, {callback});");
+		WriteDeserializationCode(count, Constants.TypeInt, context, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, context)}>({count}, {callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"{ConvertType(member.value, schema)} item;");
-		WriteDeserializationCode($"item", member.value, schema, callback, encoding);
+		WriteLine($"{ConvertType(member.value, context)} item;");
+		WriteDeserializationCode($"item", member.value, context, callback, encoding);
 		WriteLine($"{memberName}.Add(item);");
 		PopIndent();
 		WriteLine("}");
@@ -25,15 +25,15 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
 		WriteLine($"int {count};");
-		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
-		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>({callback});");
+		WriteDeserializationCode(count, Constants.TypeInt, context, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, context)}, {ConvertType(member.value, context)}>({callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"{ConvertType(member.key, schema)} key;");
-		WriteLine($"{ConvertType(member.value, schema)} value;");
-		WriteDeserializationCode("key", member.key, schema, callback, encoding);
-		WriteDeserializationCode("value", member.value, schema, callback, encoding);
+		WriteLine($"{ConvertType(member.key, context)} key;");
+		WriteLine($"{ConvertType(member.value, context)} value;");
+		WriteDeserializationCode("key", member.key, context, callback, encoding);
+		WriteDeserializationCode("value", member.value, context, callback, encoding);
 		WriteLine($"{memberName}.Add(key,value);");
 		PopIndent();
 		WriteLine("}");
@@ -42,15 +42,15 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
 		WriteLine($"int {count};");
-		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
-		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteDeserializationCode(count, Constants.TypeInt, context, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, context)}>({callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"{ConvertType(member.value, schema)} value;");
+		WriteLine($"{ConvertType(member.value, context)} value;");
 		WriteLine($"int quantity;");
-		WriteDeserializationCode("value", member.value, schema, callback, encoding);
-		WriteDeserializationCode("quantity", Constants.TypeInt, schema, callback, encoding);
+		WriteDeserializationCode("value", member.value, context, callback, encoding);
+		WriteDeserializationCode("quantity", Constants.TypeInt, context, callback, encoding);
 		WriteLine($"{memberName}.Add(value,quantity);");
 		PopIndent();
 		WriteLine("}");
@@ -59,24 +59,24 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
 		WriteLine($"int {count};");
-		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
-		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteDeserializationCode(count, Constants.TypeInt, context, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, context)}>({callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"{ConvertType(member.value, schema)} item;");
-		WriteDeserializationCode("item", member.value, schema, callback, encoding);
+		WriteLine($"{ConvertType(member.value, context)} item;");
+		WriteDeserializationCode("item", member.value, context, callback, encoding);
 		WriteLine($"{memberName}.Add(item);");
 		PopIndent();
 		WriteLine("}");
 	}
 	else
 	{
-		WriteDeserializationCode(memberName, member.type, schema, callback, encoding);
+		WriteDeserializationCode(memberName, member.type, context, callback, encoding);
 	}
 }
 
-private void WriteDeserializationCode(string memberName, string memberType, DataSchema schema, string callback, string encoding)
+private void WriteDeserializationCode(string memberName, string memberType, SchemaVersionInfo context, string callback, string encoding)
 {
 	if (memberType == Constants.TypeInt)
 		WriteLine($"{memberName} = reader.ReadInt({encoding});");
@@ -101,7 +101,7 @@ private void WriteDeserializationCode(string memberName, string memberType, Data
 	else if (memberType == Constants.TypeString)
 		WriteLine($"{memberName} = reader.ReadString({encoding});"); 
 	else
-		WriteLine($"{memberName} = new {ConvertType(memberType, schema)}(reader, {callback});");
+		WriteLine($"{memberName} = new {ConvertType(memberType, context)}(reader, {callback});");
 }
 
 #>

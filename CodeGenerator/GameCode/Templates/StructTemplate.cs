@@ -99,7 +99,7 @@ namespace CodeGenerator.GameCode.Templates
             this.Write(".");
             
             #line 9 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.ClassesNamespace));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Context.GetObjectNamespace(ObjectData.name)));
             
             #line default
             #line hidden
@@ -116,7 +116,7 @@ namespace CodeGenerator.GameCode.Templates
 
 		PushIndent("\t\t");
 		foreach (var item in ObjectData.members)
-			WriteClassMember(item, Schema, true);
+			WriteClassMember(item, Context, true);
 		PopIndent();
 
             
@@ -142,7 +142,7 @@ namespace CodeGenerator.GameCode.Templates
 
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteInitializer(item, Schema, "parent");
+				WriteInitializer(item, Context, "parent");
 			PopIndent();
 
             
@@ -175,7 +175,7 @@ namespace CodeGenerator.GameCode.Templates
 
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteDeserializationCode(item, Schema, "parent");
+				WriteDeserializationCode(item, Context, "parent");
 			PopIndent();
 
             
@@ -187,7 +187,7 @@ namespace CodeGenerator.GameCode.Templates
 
 		PushIndent("\t\t");
 		foreach (var item in ObjectData.members)
-			WriteProperty(item, Schema, true);
+			WriteProperty(item, Context, true);
 		PopIndent();
 
             
@@ -206,7 +206,7 @@ namespace CodeGenerator.GameCode.Templates
 
 			PushIndent("\t\t\t\t");
 			foreach (var item in ObjectData.members)
-				WriteSerializationCode(item, Schema);
+				WriteSerializationCode(item, Context);
 			PopIndent();
 
             
@@ -219,7 +219,7 @@ namespace CodeGenerator.GameCode.Templates
         #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsClassMember.tt"
 
 
-private string ConvertType(string type, DataSchema schema)
+private string ConvertType(string type, SchemaVersionInfo context)
 {
 	if (type == Constants.TypeInt)
 	{
@@ -265,13 +265,13 @@ private string ConvertType(string type, DataSchema schema)
 	{
 		return "string";
 	}
-	else if (schema.HasObject(type))
+	else if (context.HasClass(type))
 	{
-		return type;
+		return context.GetObjectName(type);
 	}
-	else if (schema.HasStruct(type))
+	else if (context.HasStruct(type))
 	{
-		return type;
+		return context.GetObjectName(type);
 	}
 	else
 	{
@@ -279,40 +279,7 @@ private string ConvertType(string type, DataSchema schema)
 	}
 }
 
-private void WriteInterfaceProperty(XmlClassMember member, DataSchema schema)
-{
-	var propertyName = Utils.PropertyName(member.name);
-	var memberName = Utils.PrivateMemberName(member.name);
-
-	if (member.type == Constants.TypeMap)
-	{
-		var key = ConvertType(member.key, schema);
-		var value = ConvertType(member.value, schema);
-		WriteLine($"public {Utils.MapType}<{key}, {value}> {propertyName} {{ get; }}");
-	}
-	else if (member.type == Constants.TypeSet)
-	{
-		WriteLine($"public {Utils.SetType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
-	}
-	else if (member.type == Constants.TypeList)
-	{
-		WriteLine($"public {Utils.ListType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
-	}
-	else if (member.type == Constants.TypeInventory)
-	{
-		WriteLine($"public {Utils.InventoryType}<{ConvertType(member.value, schema)}> {propertyName} {{ get; }}");
-	}
-	else if (schema.HasObject(member.type))
-	{
-		WriteLine($"public {Utils.InterfaceName(member.type)} {propertyName} {{ get; }}");
-	}
-	else
-	{
-		WriteLine($"public {ConvertType(member.type, schema)} {propertyName} {{ get; set; }}");
-	}
-}
-
-private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOnly)
+private void WriteProperty(XmlClassMember member, SchemaVersionInfo context, bool readOnly)
 {
 	var propertyName = Utils.PropertyName(member.name);
 	var memberName = Utils.PrivateMemberName(member.name);
@@ -320,31 +287,31 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 
 	if (member.type == Constants.TypeMap)
 	{
-		WriteLine($"public {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}> {propertyName} => {memberName};");
+		WriteLine($"public {Utils.MapType}<{ConvertType(member.key, context)}, {ConvertType(member.value, context)}> {propertyName} => {memberName};");
 	}
 	else if (member.type == Constants.TypeSet)
 	{
-		WriteLine($"public {Utils.SetType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
+		WriteLine($"public {Utils.SetType}<{ConvertType(member.value, context)}> {propertyName} => {memberName};");
 	}
 	else if (member.type == Constants.TypeList)
 	{
-		WriteLine($"public {Utils.ListType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
+		WriteLine($"public {Utils.ListType}<{ConvertType(member.value, context)}> {propertyName} => {memberName};");
+	}
+	else if (member.type == Constants.TypeBitset)
+	{
+		WriteLine($"public {Utils.BitsetType} {propertyName} => {memberName};");
 	}
 	else if (member.type == Constants.TypeInventory)
 	{
-		WriteLine($"public {Utils.InventoryType}<{ConvertType(member.value, schema)}> {propertyName} => {memberName};");
-	}
-	else if (schema.HasObject(member.type))
-	{
-		WriteLine($"public {member.type} {propertyName} => {memberName};");
+		WriteLine($"public {Utils.InventoryType}<{ConvertType(member.value, context)}> {propertyName} => {memberName};");
 	}
 	else if (readOnly)
 	{
-		WriteLine($"public {ConvertType(member.type, schema)} {propertyName} => {memberName};");
+		WriteLine($"public {ConvertType(member.type, context)} {propertyName} => {memberName};");
 	}
 	else
 	{
-		WriteLine($"public {ConvertType(member.type, schema)} {propertyName}");
+		WriteLine($"public {ConvertType(member.type, context)} {propertyName}");
 		WriteLine("{");
 		PushIndent("\t");
 		WriteLine($"get => {memberName};");
@@ -353,6 +320,7 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 		PushIndent("\t");
 		WriteLine($"if ({memberName} == value) return;");
 		WriteLine($"{memberName} = value;");
+		if (context.HasClass(member.type)) WriteLine($"{memberName}.Parent = this;");
 		if (notify) WriteLine(Utils.CallbackMethod + "();");
 		PopIndent();
 		WriteLine("}");
@@ -361,55 +329,59 @@ private void WriteProperty(XmlClassMember member, DataSchema schema, bool readOn
 	}
 }
 
-private void WriteInitializer(XmlClassMember member, DataSchema schema, string callback)
+private void WriteInitializer(XmlClassMember member, SchemaVersionInfo context, string callback)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
 
 	if (member.type == Constants.TypeMap)
 	{
-		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, context)}, {ConvertType(member.value, context)}>({callback});");
 	}
 	else if (member.type == Constants.TypeSet)
 	{
-		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, context)}>({callback});");
 	}
 	else if (member.type == Constants.TypeList)
 	{
-		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, context)}>({callback});");
+	}
+	else if (member.type == Constants.TypeBitset)
+	{
+		WriteLine($"{memberName} = new {Utils.BitsetType}({callback});");
 	}
 	else if (member.type == Constants.TypeInventory)
 	{
-		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, context)}>({callback});");
 	}
-	else if (schema.HasObject(member.type))
+	else if (context.HasClass(member.type))
 	{
-		WriteLine($"{memberName} = new {member.type}({callback});");
+		WriteLine($"{memberName} = new {ConvertType(member.type, context)}({callback});");
 	}
-	else if (schema.HasStruct(member.type))
+	else if (context.HasStruct(member.type))
 	{
-		WriteLine($"{memberName} = new {member.type}({callback});");
+		WriteLine($"{memberName} = new {ConvertType(member.type, context)}({callback});");
 	}
 	else
 	{
-		WriteLine($"{memberName} = {GetDefaultValue(member.@default, member.type, schema)};");
+		WriteLine($"{memberName} = {GetDefaultValue(member.@default, member.type, context)};");
 	}
 }
 
-private string GetDefaultValue(string value, string type, DataSchema schema)
+private string GetDefaultValue(string value, string type, SchemaVersionInfo context)
 {
 	if (type == Constants.TypeString)
 		return string.IsNullOrEmpty(value) ? "string.Empty" : $"\"{value}\"";
 
 	if (string.IsNullOrEmpty(value))
-		return $"default({ConvertType(type, schema)})";
+		return $"default({ConvertType(type, context)})";
 
 	if (value == Constants.Timestamp)
-		return $"({ConvertType(type, schema)})System.DateTime.UtcNow.Ticks";
+		return $"({ConvertType(type, context)})System.DateTime.UtcNow.Ticks";
 
 	return value;
 }
 
-private void WriteClassMember(XmlClassMember member, DataSchema schema, bool readOnly)
+private void WriteClassMember(XmlClassMember member, SchemaVersionInfo context, bool readOnly)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
 	var encrypted = member.options.Contains(Constants.OptionEncrypted);
@@ -419,19 +391,23 @@ private void WriteClassMember(XmlClassMember member, DataSchema schema, bool rea
 	string memberType;
 	if (member.type == Constants.TypeMap)
 	{
-		memberType = $"{Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>";
+		memberType = $"{Utils.MapType}<{ConvertType(member.key, context)}, {ConvertType(member.value, context)}>";
 	}
 	else if (member.type == Constants.TypeSet)
 	{
-		memberType = $"{Utils.SetType}<{ConvertType(member.value, schema)}>";
+		memberType = $"{Utils.SetType}<{ConvertType(member.value, context)}>";
 	}
 	else if (member.type == Constants.TypeList)
 	{
-		memberType = $"{Utils.ListType}<{ConvertType(member.value, schema)}>";
+		memberType = $"{Utils.ListType}<{ConvertType(member.value, context)}>";
+	}
+	else if (member.type == Constants.TypeBitset)
+	{
+		memberType = $"{Utils.BitsetType}";
 	}
 	else if (member.type == Constants.TypeInventory)
 	{
-		memberType = $"{Utils.InventoryType}<{ConvertType(member.value, schema)}>";
+		memberType = $"{Utils.InventoryType}<{ConvertType(member.value, context)}>";
 	}
 	else if (encrypted)
 	{
@@ -444,7 +420,7 @@ private void WriteClassMember(XmlClassMember member, DataSchema schema, bool rea
 	}
 	else
 	{
-		memberType = ConvertType(member.type, schema);
+		memberType = ConvertType(member.type, context);
 	}
 
 	WriteLine(prefix + memberType + " " + memberName + suffix);
@@ -458,60 +434,60 @@ private void WriteClassMember(XmlClassMember member, DataSchema schema, bool rea
         #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsSerializationCode.tt"
 
 
-private void WriteSerializationCode(XmlClassMember member, DataSchema schema)
+private void WriteSerializationCode(XmlClassMember member, SchemaVersionInfo context)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
 	var encoding = Utils.GetEncodingType(member.encoding);
 
 	if (member.type == Constants.TypeList)
 	{
-		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
 		WriteLine($"for (int i = 0; i < {memberName}.Count; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode($"{memberName}[i]", member.value, schema, encoding);
+		WriteSerializationCode($"{memberName}[i]", member.value, context, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeMap)
 	{
-		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
 		WriteLine($"foreach (var item in {memberName}.Items)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode("item.Key", member.key, schema, encoding);
-		WriteSerializationCode("item.Value", member.value, schema, encoding);
+		WriteSerializationCode("item.Key", member.key, context, encoding);
+		WriteSerializationCode("item.Value", member.value, context, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeInventory)
 	{
-		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
 		WriteLine($"foreach (var item in {memberName}.Items)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode("item.Key", member.value, schema, encoding);
-		WriteSerializationCode("item.Value", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode("item.Key", member.value, context, encoding);
+		WriteSerializationCode("item.Value", Constants.TypeInt, context, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeSet)
 	{
-		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
 		WriteLine($"foreach (var item in {memberName}.Items)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode("item", member.value, schema, encoding);
+		WriteSerializationCode("item", member.value, context, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else
 	{
-		WriteSerializationCode(memberName, member.type, schema, encoding);
+		WriteSerializationCode(memberName, member.type, context, encoding);
 	}
 }
 
-private void WriteSerializationCode(string memberName, string memberType, DataSchema schema, string encoding)
+private void WriteSerializationCode(string memberName, string memberType, SchemaVersionInfo context, string encoding)
 {
 	if (memberType == Constants.TypeInt)
 		WriteLine($"writer.WriteInt({memberName}, {encoding});");
@@ -547,7 +523,7 @@ private void WriteSerializationCode(string memberName, string memberType, DataSc
         #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsDeserializationCode.tt"
 
 
-private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, string callback)
+private void WriteDeserializationCode(XmlClassMember member, SchemaVersionInfo context, string callback)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
 	var encoding = Utils.GetEncodingType(member.encoding);
@@ -556,13 +532,13 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
 		WriteLine($"int {count};");
-		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
-		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, schema)}>({count}, {callback});");
+		WriteDeserializationCode(count, Constants.TypeInt, context, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.ListType}<{ConvertType(member.value, context)}>({count}, {callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"{ConvertType(member.value, schema)} item;");
-		WriteDeserializationCode($"item", member.value, schema, callback, encoding);
+		WriteLine($"{ConvertType(member.value, context)} item;");
+		WriteDeserializationCode($"item", member.value, context, callback, encoding);
 		WriteLine($"{memberName}.Add(item);");
 		PopIndent();
 		WriteLine("}");
@@ -571,15 +547,15 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
 		WriteLine($"int {count};");
-		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
-		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, schema)}, {ConvertType(member.value, schema)}>({callback});");
+		WriteDeserializationCode(count, Constants.TypeInt, context, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.MapType}<{ConvertType(member.key, context)}, {ConvertType(member.value, context)}>({callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"{ConvertType(member.key, schema)} key;");
-		WriteLine($"{ConvertType(member.value, schema)} value;");
-		WriteDeserializationCode("key", member.key, schema, callback, encoding);
-		WriteDeserializationCode("value", member.value, schema, callback, encoding);
+		WriteLine($"{ConvertType(member.key, context)} key;");
+		WriteLine($"{ConvertType(member.value, context)} value;");
+		WriteDeserializationCode("key", member.key, context, callback, encoding);
+		WriteDeserializationCode("value", member.value, context, callback, encoding);
 		WriteLine($"{memberName}.Add(key,value);");
 		PopIndent();
 		WriteLine("}");
@@ -588,15 +564,15 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
 		WriteLine($"int {count};");
-		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
-		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteDeserializationCode(count, Constants.TypeInt, context, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.InventoryType}<{ConvertType(member.value, context)}>({callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"{ConvertType(member.value, schema)} value;");
+		WriteLine($"{ConvertType(member.value, context)} value;");
 		WriteLine($"int quantity;");
-		WriteDeserializationCode("value", member.value, schema, callback, encoding);
-		WriteDeserializationCode("quantity", Constants.TypeInt, schema, callback, encoding);
+		WriteDeserializationCode("value", member.value, context, callback, encoding);
+		WriteDeserializationCode("quantity", Constants.TypeInt, context, callback, encoding);
 		WriteLine($"{memberName}.Add(value,quantity);");
 		PopIndent();
 		WriteLine("}");
@@ -605,24 +581,24 @@ private void WriteDeserializationCode(XmlClassMember member, DataSchema schema, 
 	{
 		var count = Utils.LocalVariableName(member.name) + "ItemCount";
 		WriteLine($"int {count};");
-		WriteDeserializationCode(count, Constants.TypeInt, schema, callback, encoding);
-		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, schema)}>({callback});");
+		WriteDeserializationCode(count, Constants.TypeInt, context, callback, encoding);
+		WriteLine($"{memberName} = new {Utils.SetType}<{ConvertType(member.value, context)}>({callback});");
 		WriteLine($"for (int i = 0; i < {count}; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"{ConvertType(member.value, schema)} item;");
-		WriteDeserializationCode("item", member.value, schema, callback, encoding);
+		WriteLine($"{ConvertType(member.value, context)} item;");
+		WriteDeserializationCode("item", member.value, context, callback, encoding);
 		WriteLine($"{memberName}.Add(item);");
 		PopIndent();
 		WriteLine("}");
 	}
 	else
 	{
-		WriteDeserializationCode(memberName, member.type, schema, callback, encoding);
+		WriteDeserializationCode(memberName, member.type, context, callback, encoding);
 	}
 }
 
-private void WriteDeserializationCode(string memberName, string memberType, DataSchema schema, string callback, string encoding)
+private void WriteDeserializationCode(string memberName, string memberType, SchemaVersionInfo context, string callback, string encoding)
 {
 	if (memberType == Constants.TypeInt)
 		WriteLine($"{memberName} = reader.ReadInt({encoding});");
@@ -647,7 +623,7 @@ private void WriteDeserializationCode(string memberName, string memberType, Data
 	else if (memberType == Constants.TypeString)
 		WriteLine($"{memberName} = reader.ReadString({encoding});"); 
 	else
-		WriteLine($"{memberName} = new {ConvertType(memberType, schema)}(reader, {callback});");
+		WriteLine($"{memberName} = new {ConvertType(memberType, context)}(reader, {callback});");
 }
 
 

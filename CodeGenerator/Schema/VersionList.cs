@@ -72,5 +72,22 @@ namespace CodeGenerator.Schema
 
         public string ToNamespace() => $"v{Major}";
         public bool IsNull => Major <= 0;
-    }
+
+		public static bool operator <(SchemaVersion first, SchemaVersion second)
+		{
+			if (first.Major == second.Major) return first.Minor < second.Minor;
+			return first.Major < second.Major;
+		}
+
+		public static bool operator >(SchemaVersion first, SchemaVersion second)
+		{
+			if (first.Major == second.Major) return first.Minor > second.Minor;
+			return first.Major > second.Major;
+		}
+
+		public static bool operator ==(SchemaVersion first, SchemaVersion second) => first.Major == second.Major && first.Minor == second.Minor;
+		public static bool operator !=(SchemaVersion first, SchemaVersion second) => !(first == second);
+		public static bool operator <=(SchemaVersion first, SchemaVersion second) => !(first > second);
+		public static bool operator >=(SchemaVersion first, SchemaVersion second) => !(first < second);
+	}
 }

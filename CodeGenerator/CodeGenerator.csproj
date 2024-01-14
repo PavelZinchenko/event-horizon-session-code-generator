@@ -51,6 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameCode\Builder.cs" />
+    <Compile Include="GameCode\BuilderContext.cs" />
+    <Compile Include="GameCode\Templates\SessionLoaderTemplate.cs">
+      <DependentUpon>SessionLoaderTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="GameCode\Templates\ObjectTemplate.cs">
       <DependentUpon>ObjectTemplate.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -72,7 +78,7 @@
     <Compile Include="Schema\VersionList.cs" />
     <Compile Include="Schema\XmlContent.cs" />
     <Compile Include="Utils\CodeWriter.cs" />
-    <Compile Include="Utils\Context.cs" />
+    <Compile Include="Schema\Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -83,10 +89,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GameCode\Templates\UtilsDeserializationCode.tt" />
-    <None Include="GameCode\Templates\UtilsSerializationCode.tt" />
-    <None Include="GameCode\Templates\UtilsClassMember.tt" />
-    <None Include="GameCode\Templates\GeneratedCodeWarning.tt" />
+    <Content Include="GameCode\Templates\SessionLoaderTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SessionLoaderTemplate.cs</LastGenOutput>
+    </Content>
     <Content Include="GameCode\Templates\ObjectTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ObjectTemplate.cs</LastGenOutput>
@@ -95,6 +101,11 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>StructTemplate.cs</LastGenOutput>
     </Content>
+    <None Include="GameCode\Templates\UtilsUpgradeCode.tt" />
+    <None Include="GameCode\Templates\UtilsSerializationCode.tt" />
+    <None Include="GameCode\Templates\UtilsDeserializationCode.tt" />
+    <None Include="GameCode\Templates\UtilsClassMember.tt" />
+    <None Include="GameCode\Templates\GeneratedCodeWarning.tt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

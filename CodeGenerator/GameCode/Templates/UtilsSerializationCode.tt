@@ -1,60 +1,60 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Schema" #><#+
 
-private void WriteSerializationCode(XmlClassMember member, DataSchema schema)
+private void WriteSerializationCode(XmlClassMember member, SchemaVersionInfo context)
 {
 	var memberName = Utils.PrivateMemberName(member.name);
 	var encoding = Utils.GetEncodingType(member.encoding);
 
 	if (member.type == Constants.TypeList)
 	{
-		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
 		WriteLine($"for (int i = 0; i < {memberName}.Count; ++i)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode($"{memberName}[i]", member.value, schema, encoding);
+		WriteSerializationCode($"{memberName}[i]", member.value, context, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeMap)
 	{
-		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
 		WriteLine($"foreach (var item in {memberName}.Items)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode("item.Key", member.key, schema, encoding);
-		WriteSerializationCode("item.Value", member.value, schema, encoding);
+		WriteSerializationCode("item.Key", member.key, context, encoding);
+		WriteSerializationCode("item.Value", member.value, context, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeInventory)
 	{
-		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
 		WriteLine($"foreach (var item in {memberName}.Items)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode("item.Key", member.value, schema, encoding);
-		WriteSerializationCode("item.Value", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode("item.Key", member.value, context, encoding);
+		WriteSerializationCode("item.Value", Constants.TypeInt, context, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else if (member.type == Constants.TypeSet)
 	{
-		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, schema, encoding);
+		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
 		WriteLine($"foreach (var item in {memberName}.Items)");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteSerializationCode("item", member.value, schema, encoding);
+		WriteSerializationCode("item", member.value, context, encoding);
 		PopIndent();
 		WriteLine("}");
 	}
 	else
 	{
-		WriteSerializationCode(memberName, member.type, schema, encoding);
+		WriteSerializationCode(memberName, member.type, context, encoding);
 	}
 }
 
-private void WriteSerializationCode(string memberName, string memberType, DataSchema schema, string encoding)
+private void WriteSerializationCode(string memberName, string memberType, SchemaVersionInfo context, string encoding)
 {
 	if (memberType == Constants.TypeInt)
 		WriteLine($"writer.WriteInt({memberName}, {encoding});");

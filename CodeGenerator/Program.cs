@@ -29,10 +29,10 @@ namespace CodeGenerator
                 var path = Path.GetDirectoryName(filename);
                 var latestSchema = Schema.DataSchema.Load(path, latestVersion);
 
-                var builder = new GameCode.Builder(latestSchema, new Utils.CodeWriter(Path.Combine(args[1], "GeneratedCode")));
-                builder.Build();
-            }
-            catch (Exception e)
+				var builder = new GameCode.Builder(new Utils.CodeWriter(Path.Combine(args[1], "GeneratedCode")), versions, path);
+				builder.Build();
+			}
+			catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);

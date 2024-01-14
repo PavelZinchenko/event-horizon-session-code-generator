@@ -1,89 +1,64 @@
-﻿using System;
-using CodeGenerator.GameCode.Templates;
+﻿using CodeGenerator.GameCode.Templates;
 using CodeGenerator.Schema;
 using CodeGenerator.Utils;
 
 namespace CodeGenerator.GameCode
 {
-    public class Builder
+	public class Builder
     {
-        public Builder(DataSchema schema, CodeWriter codeWriter)
+		private readonly CodeWriter _codeWriter;
+		private readonly VersionList _versionList;
+		private readonly string _schemaRootFolder;
+
+		public Builder(CodeWriter codeWriter, VersionList versionList, string schemaRootFolder)
         {
-            _schema = schema;
             _codeWriter = codeWriter;
+            _versionList = versionList;
+            _schemaRootFolder = schemaRootFolder;
         }
 
         public void Build()
         {
             _codeWriter.DeleteGeneratedFiles();
 
-            GenerateTypes();
-
-			//foreach (var item in _schema.Enums)
-			//    GenerateEnum(item);
-
-			//foreach (var item in _schema.Expressions)
-			//    GenerateExpression(item);
-
-			foreach (var item in _schema.Objects)
-			{
-				GenerateDataClass(item);
-			}
-
-			foreach (var item in _schema.Structs)
-			{
-				GenerateStruct(item);
-			}
-
-			//foreach (var item in _schema.Structs)
-			//{
-			//    GenerateSerializableClass(item, ObjectType.Struct);
-			//    GenerateDataClass(item, ObjectType.Struct);
-			//}
-
-			//foreach (var item in _schema.Configurations)
-			//{
-			//    GenerateSerializableClass(item, ObjectType.Configuration);
-			//    GenerateDataClass(item, ObjectType.Configuration);
-			//}
-		}
-
-		private void GenerateTypes()
-        {
-            //_codeWriter.Write(Utils.SerializableNamespace, "SerializableItem", new SerializableItemTemplate().TransformText());
-        }
-
-        private void GenerateDataClass(XmlClassItem item)
-        {
-            string data = new ObjectTemplate(item, _schema).TransformText();
-
-			_codeWriter.Write(Utils.ClassesNamespace, item.name, data);
-		}
-
-		private void GenerateStruct(XmlClassItem item)
-		{
-			string data = new StructTemplate(item, _schema).TransformText();
-
-			_codeWriter.Write(Utils.ClassesNamespace, item.name, data);
-		}
-
-		private readonly CodeWriter _codeWriter;
-        private readonly DataSchema _schema;
-    }
-
-    public static class StringExtensions
-    {
-        public static bool ContainsKey(this string source, string key)
-        {
-            var position = -1;
-            while (true)
+			var context = new BuilderContext();			
+            foreach (var version in _versionList.Items)
             {
-                position = source.IndexOf(key, position + 1, StringComparison.OrdinalIgnoreCase);
-                if (position < 0) return false;
-                if (position > 0 && !char.IsLetterOrDigit(key[position])) continue;
-                if (position + key.Length < source.Length && !char.IsLetterOrDigit(key[position + key.Length])) continue;
-                return true;
+				var schema = DataSchema.Load(_schemaRootFolder, version);
+				context.ApplySchema(schema);
             }
+
+			foreach (var data in context.Versions)
+				GenerateSchemaCode(data);
+
+			GenerateSessionLoader(context);
         }
+
+		private void GenerateSessionLoader(BuilderContext context)
+		{
+			_codeWriter.Write(string.Empty, "SessionLoader",
+				new SessionLoaderTemplate(_versionList, context).TransformText());
+		}
+
+		private void GenerateSchemaCode(SchemaVersionInfo context)
+        {
+			foreach (var item in context.ModifiedObjects)
+				GenerateClass(item.Schema, context);
+
+			foreach (var item in context.ModifiedStructs)
+				GenerateStruct(item.Schema, context);
+		}
+
+		private void GenerateClass(XmlClassItem item, SchemaVersionInfo context)
+		{
+			string data = new ObjectTemplate(item, context).TransformText();
+			_codeWriter.Write(context.GetObjectNamespace(item.name), item.name, data);
+		}
+
+		private void GenerateStruct(XmlClassItem item, SchemaVersionInfo context)
+		{
+			string data = new StructTemplate(item, context).TransformText();
+			_codeWriter.Write(context.GetObjectNamespace(item.name), item.name, data);
+		}
     }
 }

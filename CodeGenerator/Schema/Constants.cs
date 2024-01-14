@@ -19,6 +19,7 @@
 		public const string TypeMap = "map";
 		public const string TypeList = "list";
 		public const string TypeInventory = "inventory";
+		public const string TypeBitset = "bitset";
 
 		public const string Timestamp = "timestamp";
 
@@ -30,5 +31,5 @@
 		public const string DefaultEncoding = EncodingElias;
 
 		public static readonly char[] ValueSeparators = { ',','|',';',' ','\n','\r' };
-    }
+	}
 }
