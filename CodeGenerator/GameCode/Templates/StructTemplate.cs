@@ -190,29 +190,24 @@ namespace CodeGenerator.GameCode.Templates
 			WriteProperty(item, Context, true);
 		PopIndent();
 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n\t\tpublic void Serialize(");
-            
-            #line 47 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.WriterClass));
-            
-            #line default
-            #line hidden
-            this.Write(" writer)\r\n\t\t{\r\n");
-            
-            #line 49 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
-
-			PushIndent("\t\t\t\t");
+		if (Context.IsLatestObjectVersion(ObjectData.name))
+		{
+			WriteLine(string.Empty);
+			PushIndent("\t\t");
+			WriteLine($"public void Serialize({Utils.WriterClass} writer)");
+			WriteLine("{");
+			PushIndent("\t");
 			foreach (var item in ObjectData.members)
 				WriteSerializationCode(item, Context);
 			PopIndent();
+			WriteLine("}");
+			PopIndent();
+		}
 
             
             #line default
             #line hidden
-            this.Write("\t\t}\r\n\t}\r\n}\r\n");
+            this.Write("\t}\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
         
@@ -264,6 +259,10 @@ private string ConvertType(string type, SchemaVersionInfo context)
 	else if (type == Constants.TypeString)
 	{
 		return "string";
+	}
+	else if (type == Constants.TypeBitset)
+	{
+		return Utils.BitsetType;
 	}
 	else if (context.HasClass(type))
 	{
@@ -511,6 +510,8 @@ private void WriteSerializationCode(string memberName, string memberType, Schema
 		WriteLine($"writer.WriteBool({memberName}, {encoding});");
 	else if (memberType == Constants.TypeString)
 		WriteLine($"writer.WriteString({memberName}, {encoding});");
+	else if (memberType == Constants.TypeBitset)
+		WriteLine($"{memberName}.Serialize(writer, {encoding});");
 	else
 		WriteLine($"{memberName}.Serialize(writer);");
 }
@@ -622,6 +623,8 @@ private void WriteDeserializationCode(string memberName, string memberType, Sche
 		WriteLine($"{memberName} = reader.ReadBool({encoding});"); 
 	else if (memberType == Constants.TypeString)
 		WriteLine($"{memberName} = reader.ReadString({encoding});"); 
+	else if (memberType == Constants.TypeBitset)
+		WriteLine($"{memberName} = new {ConvertType(memberType, context)}(reader, {encoding}, {callback});");
 	else
 		WriteLine($"{memberName} = new {ConvertType(memberType, context)}(reader, {callback});");
 }

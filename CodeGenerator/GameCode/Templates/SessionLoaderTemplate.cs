@@ -110,7 +110,7 @@ namespace CodeGenerator.GameCode.Templates
 			if (!first)
 			{
 				WriteLine("/// <summary>");
-				WriteLine("/// This data must be transferred manually:");
+				WriteLine("/// These items must be transferred manually:");
 				var oldSchema = Context[oldVersion.Major];
 				var newSchema = Context[major];
 				var oldData = oldSchema.GetObject(Utils.RootDataClass);
@@ -306,88 +306,92 @@ namespace CodeGenerator.GameCode.Templates
 
 				}
 
+				if (schemaVersion.Minor > 0)
+				{
+
             
             #line default
             #line hidden
-            this.Write("\r\n\t\t\tif (versionMajor == ");
+            this.Write("\t\t\tif (versionMajor == ");
             
-            #line 100 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 102 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(major));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t\t{\r\n");
             
-            #line 102 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 104 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
 
-				for (int i = 0; i < schemaVersion.Minor; ++i)
-				{
+					for (int i = 0; i < schemaVersion.Minor; ++i)
+					{
 
             
             #line default
             #line hidden
             this.Write("\t\t\t\tif (versionMinor == ");
             
-            #line 106 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 108 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i));
             
             #line default
             #line hidden
             this.Write(")\r\n\t\t\t\t{\r\n\t\t\t\t\tUpgrage_v");
             
-            #line 108 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 110 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(major));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 108 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 110 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i));
             
             #line default
             #line hidden
             this.Write("_to_v");
             
-            #line 108 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 110 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(major));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 108 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 110 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i+1));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 108 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 110 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(");\r\n\t\t\t\t\tversionMinor = ");
             
-            #line 109 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 111 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i+1));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\t\t\t}\r\n");
             
-            #line 111 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 113 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
 
-				}
+					}
 
             
             #line default
             #line hidden
-            this.Write("\t\t\t}\r\n");
+            this.Write("\t\t\t\t}\r\n");
             
-            #line 115 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 117 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
 
+			}
 
 				first = false;
 				oldVersion = schemaVersion;
@@ -401,14 +405,14 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\r\n\t\t\treturn ");
             
-            #line 125 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 128 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
-            this.Write(";\r\n\t\t}\r\n\t\r\n");
+            this.Write(";\r\n\t\t}\r\n\r\n");
             
-            #line 128 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 131 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
 
 		first = true;
 		foreach (var schemaVersion in VersionList.Items)
@@ -422,42 +426,42 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\r\n\t\tprivate ");
             
-            #line 137 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 140 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Context[major].GetObjectName(Utils.RootDataClass)));
             
             #line default
             #line hidden
             this.Write(" Convert_");
             
-            #line 137 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 140 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(oldVersion.Major));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 137 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 140 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(major));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 137 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 140 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Context[oldVersion.Major].GetObjectName(Utils.RootDataClass)));
             
             #line default
             #line hidden
             this.Write(" oldData)\r\n\t\t{\r\n\t\t\tvar newData = new ");
             
-            #line 139 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 142 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Context[major].GetObjectName(Utils.RootDataClass)));
             
             #line default
             #line hidden
             this.Write("(null);\r\n");
             
-            #line 140 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 143 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
 
 			PushIndent("\t\t\t");
 			var oldSchema = Context[oldVersion.Major];
@@ -472,28 +476,28 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\t\t\tUpgrage_v");
             
-            #line 149 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 152 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(oldVersion.Major));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 149 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 152 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(oldVersion.Minor));
             
             #line default
             #line hidden
             this.Write("_to_v");
             
-            #line 149 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 152 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(major));
             
             #line default
             #line hidden
             this.Write("_0(oldData, newData);\r\n\t\t\treturn newData;\r\n\t\t}\r\n");
             
-            #line 152 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
+            #line 155 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\SessionLoaderTemplate.tt"
 			
 			}
 

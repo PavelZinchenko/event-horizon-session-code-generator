@@ -44,6 +44,12 @@ namespace CodeGenerator.GameCode
 		public IEnumerable<ObjectTypeInfo> ModifiedObjects => _objects.Values.Where(item => item.Schema.type == Constants.TypeObject && item.Version == _version);
 		public IEnumerable<ObjectTypeInfo> ModifiedStructs => _objects.Values.Where(item => item.Schema.type == Constants.TypeStruct && item.Version == _version);
 
+		public bool IsLatestObjectVersion(string name)
+		{
+			if (!_objects.TryGetValue(name, out var data)) return false;
+			return _builderContext.Current.Objects.TryGetValue(name, out var latest) && latest.Version == data.Version;
+		}
+
 		public string GetObjectNamespace(string name)
 		{
 			if (!_objects.TryGetValue(name, out var data)) return null;

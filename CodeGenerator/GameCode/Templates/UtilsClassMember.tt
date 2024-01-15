@@ -47,6 +47,10 @@ private string ConvertType(string type, SchemaVersionInfo context)
 	{
 		return "string";
 	}
+	else if (type == Constants.TypeBitset)
+	{
+		return Utils.BitsetType;
+	}
 	else if (context.HasClass(type))
 	{
 		return context.GetObjectName(type);

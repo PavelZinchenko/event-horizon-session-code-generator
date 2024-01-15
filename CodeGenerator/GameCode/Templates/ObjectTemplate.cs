@@ -225,38 +225,34 @@ namespace CodeGenerator.GameCode.Templates
 			WriteProperty(item, Context, false);
 		PopIndent();
 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n\t\tpublic void Serialize(");
-            
-            #line 59 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.WriterClass));
-            
-            #line default
-            #line hidden
-            this.Write(" writer)\r\n\t\t{\r\n");
-            
-            #line 61 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
-
-			PushIndent("\t\t\t");
+		if (Context.IsLatestObjectVersion(ObjectData.name))
+		{
+			WriteLine(string.Empty);
+			PushIndent("\t\t");
+			WriteLine($"public void Serialize({Utils.WriterClass} writer)");
+			WriteLine("{");
+			PushIndent("\t");
 			foreach (var item in ObjectData.members)
 				WriteSerializationCode(item, Context);
+			WriteLine("DataChanged = false;");
 			PopIndent();
+			WriteLine("}");
+			PopIndent();
+		}
 
             
             #line default
             #line hidden
-            this.Write("\t\t\tDataChanged = false;\r\n\t\t}\r\n\r\n\t\tpublic void ");
+            this.Write("\r\n\t\tpublic void ");
             
-            #line 70 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 74 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackMethod));
             
             #line default
             #line hidden
             this.Write("()\r\n\t\t{\r\n\t\t\tDataChanged = true;\r\n\t\t\t_parent?.");
             
-            #line 73 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
+            #line 77 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\ObjectTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackMethod));
             
             #line default
@@ -313,6 +309,10 @@ private string ConvertType(string type, SchemaVersionInfo context)
 	else if (type == Constants.TypeString)
 	{
 		return "string";
+	}
+	else if (type == Constants.TypeBitset)
+	{
+		return Utils.BitsetType;
 	}
 	else if (context.HasClass(type))
 	{
@@ -560,6 +560,8 @@ private void WriteSerializationCode(string memberName, string memberType, Schema
 		WriteLine($"writer.WriteBool({memberName}, {encoding});");
 	else if (memberType == Constants.TypeString)
 		WriteLine($"writer.WriteString({memberName}, {encoding});");
+	else if (memberType == Constants.TypeBitset)
+		WriteLine($"{memberName}.Serialize(writer, {encoding});");
 	else
 		WriteLine($"{memberName}.Serialize(writer);");
 }
@@ -671,6 +673,8 @@ private void WriteDeserializationCode(string memberName, string memberType, Sche
 		WriteLine($"{memberName} = reader.ReadBool({encoding});"); 
 	else if (memberType == Constants.TypeString)
 		WriteLine($"{memberName} = reader.ReadString({encoding});"); 
+	else if (memberType == Constants.TypeBitset)
+		WriteLine($"{memberName} = new {ConvertType(memberType, context)}(reader, {encoding}, {callback});");
 	else
 		WriteLine($"{memberName} = new {ConvertType(memberType, context)}(reader, {callback});");
 }

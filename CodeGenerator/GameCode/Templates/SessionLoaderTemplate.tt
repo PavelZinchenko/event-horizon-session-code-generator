@@ -19,7 +19,7 @@ namespace <#= Utils.RootNamespace #>
 			if (!first)
 			{
 				WriteLine("/// <summary>");
-				WriteLine("/// This data must be transferred manually:");
+				WriteLine("/// These items must be transferred manually:");
 				var oldSchema = Context[oldVersion.Major];
 				var newSchema = Context[major];
 				var oldData = oldSchema.GetObject(Utils.RootDataClass);
@@ -95,13 +95,15 @@ namespace <#= Utils.RootNamespace #>
 			}
 <#
 				}
-#>
 
+				if (schemaVersion.Minor > 0)
+				{
+#>
 			if (versionMajor == <#= major #>)
 			{
 <#
-				for (int i = 0; i < schemaVersion.Minor; ++i)
-				{
+					for (int i = 0; i < schemaVersion.Minor; ++i)
+					{
 #>
 				if (versionMinor == <#= i #>)
 				{
@@ -109,10 +111,11 @@ namespace <#= Utils.RootNamespace #>
 					versionMinor = <#= i+1 #>;
 				}
 <#
-				}
+					}
 #>
-			}
+				}
 <#
+			}
 
 				first = false;
 				oldVersion = schemaVersion;
@@ -124,7 +127,7 @@ namespace <#= Utils.RootNamespace #>
 
 			return <#= name #>;
 		}
-	
+
 <#
 		first = true;
 		foreach (var schemaVersion in VersionList.Items)

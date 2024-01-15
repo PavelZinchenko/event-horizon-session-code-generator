@@ -78,6 +78,8 @@ private void WriteSerializationCode(string memberName, string memberType, Schema
 		WriteLine($"writer.WriteBool({memberName}, {encoding});");
 	else if (memberType == Constants.TypeString)
 		WriteLine($"writer.WriteString({memberName}, {encoding});");
+	else if (memberType == Constants.TypeBitset)
+		WriteLine($"{memberName}.Serialize(writer, {encoding});");
 	else
 		WriteLine($"{memberName}.Serialize(writer);");
 }
