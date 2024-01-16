@@ -598,7 +598,7 @@ private void WriteXmlComments(
 
 		if (!Helpers.AreEqual(member, targetMember))
 		{
-			WriteLine($"/// type was changed - {propertyName};");
+			WriteLine($"/// type was changed - {sourceName}.{propertyName};");
 			continue;
 		}
 
