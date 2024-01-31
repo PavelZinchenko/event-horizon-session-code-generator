@@ -19,7 +19,7 @@ private void WriteSerializationCode(XmlClassMember member, SchemaVersionInfo con
 	else if (member.type == Constants.TypeMap)
 	{
 		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
-		WriteLine($"foreach (var item in {memberName}.Items)");
+		WriteLine($"foreach (var item in {memberName})");
 		WriteLine("{");
 		PushIndent("\t");
 		WriteSerializationCode("item.Key", member.key, context, encoding);
@@ -30,7 +30,7 @@ private void WriteSerializationCode(XmlClassMember member, SchemaVersionInfo con
 	else if (member.type == Constants.TypeInventory)
 	{
 		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
-		WriteLine($"foreach (var item in {memberName}.Items)");
+		WriteLine($"foreach (var item in {memberName})");
 		WriteLine("{");
 		PushIndent("\t");
 		WriteSerializationCode("item.Key", member.value, context, encoding);
@@ -41,7 +41,7 @@ private void WriteSerializationCode(XmlClassMember member, SchemaVersionInfo con
 	else if (member.type == Constants.TypeSet)
 	{
 		WriteSerializationCode($"{memberName}.Count", Constants.TypeInt, context, encoding);
-		WriteLine($"foreach (var item in {memberName}.Items)");
+		WriteLine($"foreach (var item in {memberName})");
 		WriteLine("{");
 		PushIndent("\t");
 		WriteSerializationCode("item", member.value, context, encoding);
