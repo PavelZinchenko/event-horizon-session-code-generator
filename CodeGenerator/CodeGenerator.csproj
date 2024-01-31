@@ -101,6 +101,7 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>StructTemplate.cs</LastGenOutput>
     </Content>
+    <None Include="GameCode\Templates\UtilsComparisonCode.tt" />
     <None Include="GameCode\Templates\UtilsUpgradeCode.tt" />
     <None Include="GameCode\Templates\UtilsSerializationCode.tt" />
     <None Include="GameCode\Templates\UtilsDeserializationCode.tt" />
