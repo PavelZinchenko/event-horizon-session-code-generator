@@ -104,7 +104,10 @@ private void WriteProperty(XmlClassMember member, SchemaVersionInfo context, boo
 		WriteLine("set");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"if ({memberName} == value) return;");
+        if (context.HasStruct(member.type))
+    		WriteLine($"if ({memberName}.Equals(value)) return;");
+        else
+    		WriteLine($"if ({memberName} == value) return;");
 		WriteLine($"{memberName} = value;");
 		if (context.HasClass(member.type)) WriteLine($"{memberName}.Parent = this;");
 		if (notify) WriteLine(Utils.CallbackMethod + "();");

@@ -32,8 +32,6 @@ namespace CodeGenerator.GameCode
 		public const string CallbackInterface = "IDataChangedCallback";
 		public const string CallbackMethod = "OnDataChanged";
 
-		public const string RootDataClass = "SaveGameData";
-
 		public const string WriterClass = "SessionDataWriter";
 		public const string ReaderClass = "SessionDataReader";
 
@@ -43,8 +41,7 @@ namespace CodeGenerator.GameCode
 		public const string BitsetType = "ObservableBitset";
 		public const string InventoryType = "ObservableInventory";
 
-		public const string RootNamespace = "Session";
 		public const string ClassesNamespace = "Model";
-		public const string UtilsNamespace = "Utils";
+		public const string UtilsNamespace = "Session.Utils";
     }
 }

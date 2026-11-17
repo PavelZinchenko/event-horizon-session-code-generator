@@ -30,7 +30,13 @@ namespace CodeGenerator
                 var latestSchema = Schema.DataSchema.Load(path, latestVersion);
 
 				var builder = new GameCode.Builder(new Utils.CodeWriter(Path.Combine(args[1], "GeneratedCode")), versions, path);
-				builder.Build();
+
+                if (args.Length >= 3)
+                    builder.RootNamespace = args[2];
+                if (args.Length >= 4)
+                    builder.RootDataClass = args[3];
+
+                builder.Build();
 			}
 			catch (Exception e)
             {

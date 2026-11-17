@@ -37,7 +37,10 @@ namespace CodeGenerator.GameCode
 		public SchemaVersion Version => _version;
 		public Dictionary<string, ObjectTypeInfo> Objects => _objects;
 
-		public bool HasClass(string name) => _objects.TryGetValue(name, out var item) && item.Schema.type == Constants.TypeObject;
+        public string RootDataClass => _builderContext.RootDataClass;
+        public string RootNamespace => _builderContext.RootNamespace;
+
+        public bool HasClass(string name) => _objects.TryGetValue(name, out var item) && item.Schema.type == Constants.TypeObject;
 		public bool HasStruct(string name) => _objects.TryGetValue(name, out var item) && item.Schema.type == Constants.TypeStruct;
 		public XmlClassItem GetObject(string name) => _objects.TryGetValue(name, out var item) ? item.Schema : null;
 
@@ -113,7 +116,10 @@ namespace CodeGenerator.GameCode
 		public IEnumerable<SchemaVersionInfo> Versions => _history.Values;
 		public SchemaVersionInfo this[int versionMajor] => _history.TryGetValue(versionMajor, out var data) ? data : null;
 
-		public void ApplySchema(DataSchema schema)
+        public string RootDataClass { get; set; }
+        public string RootNamespace { get; set; }
+
+        public void ApplySchema(DataSchema schema)
 		{
 			_current = new SchemaVersionInfo(this, schema.Version, _current?.Objects);
 			_history.Add(schema.Version.Major, _current);

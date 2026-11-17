@@ -16,7 +16,7 @@ namespace CodeGenerator.GameCode.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+    #line 1 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
     public partial class StructTemplate : StructTemplateBase
     {
@@ -27,49 +27,49 @@ namespace CodeGenerator.GameCode.Templates
         public virtual string TransformText()
         {
             
-            #line 1 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
+            #line 1 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture("//-------------------------------------------------------------------------------"));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
+            #line 2 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture("//                                                                               "));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 3 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
+            #line 3 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture("//    This code was automatically generated.                                     "));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 4 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
+            #line 4 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture("//    Changes to this file may cause incorrect behavior and will be lost if      "));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 5 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
+            #line 5 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture("//    the code is regenerated.                                                   "));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 6 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
+            #line 6 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture("//                                                                               "));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 7 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
+            #line 7 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\GeneratedCodeWarning.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture("//-------------------------------------------------------------------------------"));
             
             #line default
@@ -77,42 +77,35 @@ namespace CodeGenerator.GameCode.Templates
             this.Write("\r\n");
             this.Write("\r\nusing System.Collections.Generic;\r\nusing ");
             
-            #line 9 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.RootNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".");
-            
-            #line 9 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 9 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.UtilsNamespace));
             
             #line default
             #line hidden
             this.Write(";\r\n\r\nnamespace ");
             
-            #line 11 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Utils.RootNamespace));
+            #line 11 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Context.RootNamespace));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 11 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 11 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Context.GetObjectNamespace(ObjectData.name)));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n\tpublic readonly partial struct ");
             
-            #line 13 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 13 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write("\r\n\t{\r\n");
             
-            #line 15 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 15 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
 
 		PushIndent("\t\t");
 		foreach (var item in ObjectData.members)
@@ -124,21 +117,21 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\r\n\t\tpublic ");
             
-            #line 22 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 22 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 22 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 22 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackInterface));
             
             #line default
             #line hidden
             this.Write(" parent)\r\n\t\t{\r\n");
             
-            #line 24 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 24 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
 
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
@@ -150,28 +143,28 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\t\t}\r\n\r\n\t\tpublic ");
             
-            #line 32 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 32 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 32 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 32 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.ReaderClass));
             
             #line default
             #line hidden
             this.Write(" reader, ");
             
-            #line 32 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 32 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.CallbackInterface));
             
             #line default
             #line hidden
             this.Write(" parent)\r\n\t\t{\r\n");
             
-            #line 34 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 34 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
 
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
@@ -183,7 +176,7 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\t\t}\r\n\r\n");
             
-            #line 42 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 42 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
 
 		PushIndent("\t\t");
 		foreach (var item in ObjectData.members)
@@ -198,14 +191,14 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("\r\n        public void Serialize(");
             
-            #line 52 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 52 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Utils.WriterClass));
             
             #line default
             #line hidden
             this.Write(" writer)\r\n        {\r\n");
             
-            #line 54 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 54 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
 
 			PushIndent("\t\t\t");
 			foreach (var item in ObjectData.members)
@@ -217,14 +210,14 @@ namespace CodeGenerator.GameCode.Templates
             #line hidden
             this.Write("        }\r\n\r\n        public bool Equals(");
             
-            #line 62 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 62 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write(" other)\r\n        {\r\n");
             
-            #line 64 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 64 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
 
     		PushIndent("\t\t\t");
     		foreach (var item in ObjectData.members)
@@ -237,35 +230,35 @@ namespace CodeGenerator.GameCode.Templates
             this.Write("            return true;\r\n        }\r\n\r\n        public struct EqualityComparer : I" +
                     "EqualityComparer<");
             
-            #line 73 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 73 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write(">\r\n        {\r\n            public bool Equals(");
             
-            #line 75 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 75 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write(" first, ");
             
-            #line 75 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 75 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write(" second) => first.Equals(second);\r\n            public int GetHashCode(");
             
-            #line 76 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 76 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ObjectData.name));
             
             #line default
             #line hidden
             this.Write(" obj) => obj.GetHashCode();\r\n        }\r\n");
             
-            #line 78 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
+            #line 78 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\StructTemplate.tt"
 
 		}
 
@@ -276,7 +269,7 @@ namespace CodeGenerator.GameCode.Templates
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsClassMember.tt"
+        #line 2 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsClassMember.tt"
 
 
 private string ConvertType(string type, SchemaVersionInfo context)
@@ -382,7 +375,10 @@ private void WriteProperty(XmlClassMember member, SchemaVersionInfo context, boo
 		WriteLine("set");
 		WriteLine("{");
 		PushIndent("\t");
-		WriteLine($"if ({memberName} == value) return;");
+        if (context.HasStruct(member.type))
+    		WriteLine($"if ({memberName}.Equals(value)) return;");
+        else
+    		WriteLine($"if ({memberName} == value) return;");
 		WriteLine($"{memberName} = value;");
 		if (context.HasClass(member.type)) WriteLine($"{memberName}.Parent = this;");
 		if (notify) WriteLine(Utils.CallbackMethod + "();");
@@ -495,7 +491,7 @@ private void WriteClassMember(XmlClassMember member, SchemaVersionInfo context, 
         #line default
         #line hidden
         
-        #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsSerializationCode.tt"
+        #line 2 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsSerializationCode.tt"
 
 
 private void WriteSerializationCode(XmlClassMember member, SchemaVersionInfo context)
@@ -586,7 +582,7 @@ private void WriteSerializationCode(string memberName, string memberType, Schema
         #line default
         #line hidden
         
-        #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsDeserializationCode.tt"
+        #line 2 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsDeserializationCode.tt"
 
 
 private void WriteDeserializationCode(XmlClassMember member, SchemaVersionInfo context, string callback)
@@ -699,7 +695,7 @@ private void WriteDeserializationCode(string memberName, string memberType, Sche
         #line default
         #line hidden
         
-        #line 2 "D:\Projects\event-horizon-main\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsComparisonCode.tt"
+        #line 2 "D:\Projects\event-horizon-frontier\Assets\Modules\GameSession\.CodeGenerator\CodeGenerator\GameCode\Templates\UtilsComparisonCode.tt"
 
 
 private string GetEqualityComparer(string type, SchemaVersionInfo context)

@@ -3,9 +3,9 @@
 <#@ include file="GeneratedCodeWarning.tt" #>
 <#@ include file="UtilsUpgradeCode.tt" #>
 
-using <#= Utils.RootNamespace #>.<#= Utils.UtilsNamespace #>;
+using <#= Utils.UtilsNamespace #>;
 
-namespace <#= Utils.RootNamespace #>
+namespace <#= Context.RootNamespace #>
 {
 	public partial class SessionLoader
 	{
@@ -22,15 +22,15 @@ namespace <#= Utils.RootNamespace #>
 				WriteLine("/// These items must be transferred manually:");
 				var oldSchema = Context[oldVersion.Major];
 				var newSchema = Context[major];
-				var oldData = oldSchema.GetObject(Utils.RootDataClass);
-				var newData = newSchema.GetObject(Utils.RootDataClass);
+				var oldData = oldSchema.GetObject(Context.RootDataClass);
+				var newData = newSchema.GetObject(Context.RootDataClass);
 				WriteXmlComments("oldData", "newData", oldData, newData, oldSchema, newSchema);
 				WriteLine("/// </summary>");
-				WriteLine($"partial void Upgrage_v{oldVersion.Major}_{oldVersion.Minor}_to_v{major}_{0}({Context[oldVersion.Major].GetObjectName(Utils.RootDataClass)} oldData, {Context[major].GetObjectName(Utils.RootDataClass)} newData);");
+				WriteLine($"partial void Upgrage_v{oldVersion.Major}_{oldVersion.Minor}_to_v{major}_{0}({Context[oldVersion.Major].GetObjectName(Context.RootDataClass)} oldData, {Context[major].GetObjectName(Context.RootDataClass)} newData);");
 			}
 
 			for (int i = 0; i < schemaVersion.Minor; ++i)
-				WriteLine($"partial void Upgrage_v{major}_{i}_to_v{major}_{i+1}({Context[major].GetObjectName(Utils.RootDataClass)} data);");
+				WriteLine($"partial void Upgrage_v{major}_{i}_to_v{major}_{i+1}({Context[major].GetObjectName(Context.RootDataClass)} data);");
 
 			first = false;
 			oldVersion = schemaVersion;
@@ -38,7 +38,7 @@ namespace <#= Utils.RootNamespace #>
 		PopIndent();
 #>
 
-		public <#= Context.Current.GetObjectName(Utils.RootDataClass) #> Convert(<#= Context[1].GetObjectName(Utils.RootDataClass) #> data)
+		public <#= Context.Current.GetObjectName(Context.RootDataClass) #> Convert(<#= Context[1].GetObjectName(Context.RootDataClass) #> data)
 		{
 <#
 			PushIndent("\t\t\t");
@@ -66,7 +66,7 @@ namespace <#= Utils.RootNamespace #>
 			return <#= name #>;
 		}
 
-		public <#= Context.Current.GetObjectName(Utils.RootDataClass) #> Load(<#= Utils.ReaderClass #> reader, int versionMajor, int versionMinor)
+		public <#= Context.Current.GetObjectName(Context.RootDataClass) #> Load(<#= Utils.ReaderClass #> reader, int versionMajor, int versionMinor)
 		{
 <#
 			first = true;
@@ -80,9 +80,9 @@ namespace <#= Utils.RootNamespace #>
 				if (!first) WriteLine(string.Empty);
 
 #>
-			<#= Context[major].GetObjectName(Utils.RootDataClass) #> <#= name #> = null;
+			<#= Context[major].GetObjectName(Context.RootDataClass) #> <#= name #> = null;
 			if (versionMajor == <#= major #>)
-				<#= name #> = new <#= Context[major].GetObjectName(Utils.RootDataClass) #>(reader, null);
+				<#= name #> = new <#= Context[major].GetObjectName(Context.RootDataClass) #>(reader, null);
 <#
 				if (!first)
 				{
@@ -137,15 +137,15 @@ namespace <#= Utils.RootNamespace #>
 			{
 #>
 
-		private <#= Context[major].GetObjectName(Utils.RootDataClass) #> Convert_<#= oldVersion.Major #>_<#= major #>(<#= Context[oldVersion.Major].GetObjectName(Utils.RootDataClass) #> oldData)
+		private <#= Context[major].GetObjectName(Context.RootDataClass) #> Convert_<#= oldVersion.Major #>_<#= major #>(<#= Context[oldVersion.Major].GetObjectName(Context.RootDataClass) #> oldData)
 		{
-			var newData = new <#= Context[major].GetObjectName(Utils.RootDataClass) #>(null);
+			var newData = new <#= Context[major].GetObjectName(Context.RootDataClass) #>(null);
 <#
 			PushIndent("\t\t\t");
 			var oldSchema = Context[oldVersion.Major];
 			var newSchema = Context[major];
-			var oldData = oldSchema.GetObject(Utils.RootDataClass);
-			var newData = newSchema.GetObject(Utils.RootDataClass);
+			var oldData = oldSchema.GetObject(Context.RootDataClass);
+			var newData = newSchema.GetObject(Context.RootDataClass);
 			WriteClonningCode("oldData", "newData", oldData, newData, oldSchema, newSchema);
 			PopIndent();
 #>

@@ -6,9 +6,9 @@
 <#@ include file="UtilsComparisonCode.tt" #>
 
 using System.Collections.Generic;
-using <#= Utils.RootNamespace #>.<#= Utils.UtilsNamespace #>;
+using <#= Utils.UtilsNamespace #>;
 
-namespace <#= Utils.RootNamespace #>.<#= Context.GetObjectNamespace(ObjectData.name) #>
+namespace <#= Context.RootNamespace #>.<#= Context.GetObjectNamespace(ObjectData.name) #>
 {
 	public readonly partial struct <#= ObjectData.name #>
 	{

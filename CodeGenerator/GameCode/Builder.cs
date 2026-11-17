@@ -17,11 +17,17 @@ namespace CodeGenerator.GameCode
             _schemaRootFolder = schemaRootFolder;
         }
 
+        public string RootNamespace { get; set; } = "Session";
+        public string RootDataClass { get; set; } = "SaveGameData";
+
         public void Build()
         {
             _codeWriter.DeleteGeneratedFiles();
 
-			var context = new BuilderContext();			
+			var context = new BuilderContext();
+            context.RootNamespace = RootNamespace;
+            context.RootDataClass = RootDataClass;
+
             foreach (var version in _versionList.Items)
             {
 				var schema = DataSchema.Load(_schemaRootFolder, version);
